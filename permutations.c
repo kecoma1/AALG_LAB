@@ -52,6 +52,6 @@ int** generate_permutations(int n_perms, int N) {
 
   /* Loop for creating the permutations */
   for (i = 0; i < n_perms; i++) {
-    perms[i] = ()
+    perms[i] = (int)
   }
 }
