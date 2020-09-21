@@ -42,5 +42,16 @@ int* generate_perm(int N) {
  * @return int** Pointer to the array of permutations
  */
 int** generate_permutations(int n_perms, int N) {
-/* your code */
+  int i = 0, **perms = NULL;
+
+  if (n_perms <= 0 || N <= 0) return NULL;
+
+  /* Reserving memory for the permutations */
+  perms = (int**)malloc(n_perms*sizeof(int*));
+  if (perms == NULL) return NULL;
+
+  /* Loop for creating the permutations */
+  for (i = 0; i < n_perms; i++) {
+    perms[i] = ()
+  }
 }
