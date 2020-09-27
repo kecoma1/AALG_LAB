@@ -21,7 +21,19 @@
  * @return int Random number
  */
 int random_num(int inf, int sup) {
-  /* your code */
+    
+  /* Variables used in the code */
+  int random = 0;
+
+  /* Checking arguments */
+  if (inf < 0 || sup <= 0 || inf > sup) return -1;
+  
+  random = rand();
+  if(random < 0) return -1;
+
+  /* Taking the random number between 0 and rand_max */
+  random = inf + (int) (((sup - inf + 1.0) * random) / (RAND_MAX + 1.0));
+  if (random < inf || random > sup) return -1;
 }
 
 /**
