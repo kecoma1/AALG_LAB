@@ -19,7 +19,7 @@
 int main(int argc, char** argv)
 {
   int i;
-  unsigned int num, tamanio, j, k;
+  unsigned int num, size, j, k;
   int* perm = NULL;
 
   srand(time(NULL));
@@ -40,7 +40,7 @@ int main(int argc, char** argv)
   /* check command line */
   for(i = 1; i < argc; i++) {
     if (strcmp(argv[i], "-size") == 0) {
-      tamanio = atoi(argv[++i]);
+      size = atoi(argv[++i]);
     } else if (strcmp(argv[i], "-numP") == 0) {
       num = atoi(argv[++i]);
     } else {
@@ -55,7 +55,7 @@ int main(int argc, char** argv)
       printf("Error: Out of memory\n");
       exit(-1);
     } else {
-      for(k = 0; k < tamanio; k++) { /* print each element */
+      for(k = 0; k < size; k++) { /* print each element */
         printf("%d ", perm[k]);
       }
       printf("\n");

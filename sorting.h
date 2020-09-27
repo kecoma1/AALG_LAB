@@ -15,6 +15,9 @@
 
 /* constants */
 
+#include <stdlib.h>
+#include <stdio.h>
+
 #ifndef ERR
   #define ERR -1
   #define OK (!(ERR))
