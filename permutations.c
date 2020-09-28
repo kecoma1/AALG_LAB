@@ -23,7 +23,6 @@
  */
 short swap(int *a, int *b) {
 
-    /* Local variables */
     int aux = 0;
 
     /* Checking arguments */
@@ -48,10 +47,8 @@ short swap(int *a, int *b) {
  */
 int random_num(int inf, int sup) {
     
-  /* Variables used in the code */
   int random = 0;
 
-  /* Checking arguments */
   if (inf < 0 || sup < 0 || inf > sup) return ERR;
   
   random = rand();
@@ -78,15 +75,18 @@ int* generate_perm(int N) {
   if(N <= 0)
     return NULL;
   
+  /* Reserving memory for the permutation */
   perm = (int*)malloc(N * sizeof(int));
   if (perm == NULL)
     return NULL;
 
+  /* Filling the documentation */
   for(i = 0; i < N; i++){
     perm[i] = i+1;
   }
 
-  for(i = 0; i < N; i++){
+  /* Swaping numbers in the permutation */
+  for(i = 0; i < N; i++) {
     random = random_num(i, N-1);
     if (random == ERR) {
       free(perm);
