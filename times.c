@@ -105,9 +105,19 @@ short generate_sorting_times(pfunc_sort method, char* file,
 
   /* Allocating memory for the array of ptimes */
   counter = (num_max - num_min) / incr;
-  ptime = (PTIME_AA)malloc(counter * sizeof(TIME_AA));
+  ptime = (TIME_AA*)malloc(counter * sizeof(TIME_AA));
   if (ptime == NULL)
     return ERR;
+
+  /* Initializing ptime */
+  for(i = 0; i < counter; i++) {
+    ptime[i].average_ob = 0;
+    ptime[i].max_ob = 0;
+    ptime[i].min_ob = 0;
+    ptime[i].N = 0;
+    ptime[i].n_elems = 0;
+    ptime[i].time = 0;
+  }
 
   /* Calling the function to get the ptimes */
   for(i=num_min; i <= num_max; i += incr, n++){
@@ -141,14 +151,11 @@ short save_time_table(char* file, PTIME_AA ptime, int n_times) {
   FILE *fp = NULL;
 
   /* Checking arguments */
-  if (file == NULL || ptime == NULL || n_times < 0){
-    free(ptime);
-    return ERR;
-  }
+  if (file == NULL || ptime == NULL || n_times < 0) return ERR;
 
   /* Opening the file */
-  fp = fopen(file, "w+");
-  if (fp == NULL)
+  fp = fopen(file, "w");
+  if (fp == NULL) return ERR;
 
   /* Printing all the ptimes */
   for (i = 0; i < n_times; i++){
