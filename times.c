@@ -28,15 +28,12 @@ short average_sorting_time(pfunc_sort method,
                               int N, 
                               PTIME_AA ptime) {
 
-  clock_t start = 0, end = 0, total = 0;
-  int **perms = NULL, i = 0, n = 0, index = 0;
+  clock_t start = 0, end = 0;
+  double total = 0;
+  int **perms = NULL, i = 0, n = 0;
   long BOs = 0, total_BOs = 0;
   
   if (method == NULL || n_perms <= 0 || N <= 0 || ptime == NULL) return ERR;
-
-  /* Looking for the index to modify in ptime */
-  while(ptime[i].N != 0) i++;
-  index = i;
 
   /* Creating all the permutations */
   perms = generate_permutations(n_perms, N);
@@ -61,8 +58,8 @@ short average_sorting_time(pfunc_sort method,
     } 
 
     /* Checking the maximum and minimum values of the structure */
-    if (ptime[index].min_ob == 0 || ptime[index].min_ob > BOs) ptime[index].min_ob = BOs;
-    if (ptime[index].max_ob == 0 || ptime[index].max_ob < BOs) ptime[index].max_ob = BOs;
+    if (ptime->min_ob == 0 || ptime->min_ob > BOs) ptime->min_ob = BOs;
+    if (ptime->max_ob == 0 || ptime->max_ob < BOs) ptime->max_ob = BOs;
 
     total_BOs += BOs;
   }
@@ -76,10 +73,10 @@ short average_sorting_time(pfunc_sort method,
 
   /* Assingning the values to the structure */
   total = ((double) (end - start)) / CLOCKS_PER_SEC;
-  ptime[index].time = total;
-  ptime[index].N = N;
-  ptime[index].n_elems = n_perms;
-  ptime[index].average_ob = ((double) total_BOs)/n_perms;
+  ptime->time = total;
+  ptime->N = N;
+  ptime->n_elems = n_perms;
+  ptime->average_ob = ((double) total_BOs)/n_perms;
   for(i = 0; i < n_perms; i++) free(perms[i]);
   free(perms);
 
@@ -166,7 +163,7 @@ short save_time_table(char* file, PTIME_AA ptime, int n_times) {
    
     fprintf(fp, "Number of elements: %d\t"
             "Size of each element: %d\t"
-            "Average clock time: %f\t"
+            "Average clock time: %e\t"
             "Average OB executed: %f\t"
             "Minimun OB executed: %d\t"
             "Maximun OB executed: %d\t\n", ptime[i].n_elems, ptime[i].N, ptime[i].time, ptime[i].average_ob, ptime[i].min_ob, ptime[i].max_ob);
