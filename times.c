@@ -29,10 +29,14 @@ short average_sorting_time(pfunc_sort method,
                               PTIME_AA ptime) {
 
   clock_t start = 0, end = 0, total = 0;
-  int **perms = NULL, i = 0, n = 0;
+  int **perms = NULL, i = 0, n = 0, index = 0;
   long BOs = 0, total_BOs = 0;
   
   if (method == NULL || n_perms <= 0 || N <= 0 || ptime == NULL) return ERR;
+
+  /* Looking for the index to modify in ptime */
+  while(ptime[i].N != 0) i++;
+  index = i;
 
   /* Creating all the permutations */
   perms = generate_permutations(n_perms, N);
@@ -57,8 +61,8 @@ short average_sorting_time(pfunc_sort method,
     } 
 
     /* Checking the maximum and minimum values of the structure */
-    if (ptime->min_ob == 0 || ptime->min_ob > BOs) ptime->min_ob = BOs;
-    if (ptime->max_ob == 0 || ptime->max_ob < BOs) ptime->max_ob = BOs;
+    if (ptime[index].min_ob == 0 || ptime[index].min_ob > BOs) ptime[index].min_ob = BOs;
+    if (ptime[index].max_ob == 0 || ptime[index].max_ob < BOs) ptime[index].max_ob = BOs;
 
     total_BOs += BOs;
   }
@@ -72,10 +76,10 @@ short average_sorting_time(pfunc_sort method,
 
   /* Assingning the values to the structure */
   total = ((double) (end - start)) / CLOCKS_PER_SEC;
-  ptime->time = total;
-  ptime->N = N;
-  ptime->n_elems = n_perms;
-  ptime->average_ob = ((double) total_BOs)/n_perms;
+  ptime[index].time = total;
+  ptime[index].N = N;
+  ptime[index].n_elems = n_perms;
+  ptime[index].average_ob = ((double) total_BOs)/n_perms;
   for(i = 0; i < n_perms; i++) free(perms[i]);
   free(perms);
 
@@ -104,8 +108,8 @@ short generate_sorting_times(pfunc_sort method, char* file,
     return ERR;
 
   /* Allocating memory for the array of ptimes */
-  counter = (num_max - num_min) / incr;
-  ptime = (TIME_AA*)malloc(counter * sizeof(TIME_AA));
+  counter = ((num_max - num_min) / incr) + 1;
+  ptime = (PTIME_AA)malloc(counter * sizeof(TIME_AA));
   if (ptime == NULL)
     return ERR;
 
