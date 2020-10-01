@@ -73,7 +73,7 @@ short average_sorting_time(pfunc_sort method,
 
   /* Assingning the values to the structure */
   total = ((double) (end - start)) / CLOCKS_PER_SEC;
-  ptime->time = total;
+  ptime->time = total / n_perms;
   ptime->N = N;
   ptime->n_elems = n_perms;
   ptime->average_ob = ((double) total_BOs)/n_perms;
