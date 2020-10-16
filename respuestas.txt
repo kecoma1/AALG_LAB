@@ -1,0 +1,41 @@
+1.
+    For the implementation of the random_num function, we created a routine that generates equiprobable numbers between 2 integers.
+    For that we first take a random num between 0 and RAND_MAX, after that we perform some arithmetic operations so we the number generated is between, the 2 integers mentioned before. With this implementation we are totally sure that the function generates numbers in a equiprobable way.
+    Another way to generate this numbers is this one:
+        int random = 0, diff = 1 + sup - inf, distance = 0, addrest = 0;
+        double divi = 0, aprox = 0;
+        random = rand();
+        if (random < inf) {
+            distance = inf - random;
+            divi = distance / diff;
+            aprox = ceil(divi);
+            addrest = diff * aprox;
+            random = random + addrest;
+        } else if (random > sup){
+            distance = random - inf;
+            divi = distance / diff;
+            aprox = ceil(divi);
+            addrest = diff * aprox;
+            random = random - addrest;
+        }  
+
+        return random;
+
+    This way is not optimal because it needs a lot of cycles and a library (math.h for the ceil function)
+
+2.
+    The algorithm works well because it iterates in every element of the array, and it compares each element with the previous one, if the number compared is smaller than the previous one this element is swaped with the previous one and then we compare again the element with his new previous element until we find a number that is not smaller than our element. If we consider that we are doing this for each element in the array, we are going to see how the algorithm leaves the elements of the array that it has checked sorted, so when it reaches the end, the array is sorted.
+
+3.
+    Because the algorithm compares each element with the previous one, so the previous element of the first one doesn't exist, so that's why we start from the second one.
+
+4.
+    The basic operation of insertSort is a key comparison, the comparison between a number an element and the previous one. if (table[j] > A)
+
+5.
+    W = (N²-N)/2 + O(N) -> O(N²)
+    B = N-1  -> O(N)
+    A = O(N²)
+
+6. 
+    If we strictly compare the results between both algorithm we can see a tiny difference between this 2 in some moments, sometimes the INV is faster, sometimes the normal one is faster. The reason of this may be the tasks that the processor is doing while the algorithms were executed, but there's not any theoretical difference, both algorithms have exactly the same structure, the only difference is a ">".So the performace is the same, we shouldn't take into account the 0,0000000000000000000001 difference in each execution, the overall behaviour is exactly the same.
