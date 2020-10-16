@@ -59,5 +59,5 @@ exercise4_test:
 
 exercise5_test:
 	@echo Running exercise5
-	@./exercise5 -num_min 100 -num_max 500 -incr 1 -numP 1000 -outputFile exercise5.log
+	@./exercise5 -num_min 10 -num_max 50 -incr 1 -numP 1000 -outputFile exercise5_test.log
 	
