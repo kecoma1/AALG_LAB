@@ -38,4 +38,4 @@
     A = O(N²)
 
 6. 
-    If we strictly compare the results between both algorithm we can see a tiny difference between this 2 in some moments, sometimes the INV is faster, sometimes the normal one is faster. The reason of this may be the tasks that the processor is doing while the algorithms were executed, but there's not any theoretical difference, both algorithms have exactly the same structure, the only difference is a ">".So the performace is the same, we shouldn't take into account the 0,0000000000000000000001 difference in each execution, the overall behaviour is exactly the same.
+    If we strictly compare the results between both algorithm we can see a tinygit difference between this 2 in some moments, sometimes the INV is faster, sometimes the normal one is faster. The reason of this may be the tasks that the processor is doing while the algorithms were executed, but there's not any theoretical difference, both algorithms have exactly the same structure, the only difference is a ">".So the performace is the same, we shouldn't take into account the 0,0000000000000000000001 difference in each execution, the overall behaviour is exactly the same.
