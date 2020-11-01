@@ -177,15 +177,8 @@ short save_time_table(char *file, PTIME_AA ptime, int n_times) {
         return ERR;
 
     /* Printing all the ptimes */
-    for (i = 0; i < n_times; i++)
-    {
-
-        fprintf(fp, "Number of elements: %d\t"
-                    "Size of each element: %d\t"
-                    "Average clock time: %e\t"
-                    "Average OB executed: %f\t"
-                    "Minimun OB executed: %d\t"
-                    "Maximun OB executed: %d\t\n",
+    for (i = 0; i < n_times; i++) {
+        fprintf(fp, "%d\t, %d\t, %e\t, %f\t, %d\t, %d\t\n",
                 ptime[i].n_elems, ptime[i].N, ptime[i].time, ptime[i].average_ob, ptime[i].min_ob, ptime[i].max_ob);
     }
 

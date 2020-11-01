@@ -51,4 +51,13 @@ int* generate_perm(int N);
  */
 int** generate_permutations(int n_perms, int N);
 
+/**
+ * @brief Function which swaps two elements
+ *
+ * @param el1 First element to be swapped
+ * @param el2 Second element to be swapped
+ * @return int Basic operations done
+ */
+int swap(int *el1, int *el2);
+
 #endif

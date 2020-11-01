@@ -12,31 +12,6 @@
 
 #include "permutations.h"
 
-/* Private functions */
-/**
- * @brief 
- * 
- * @param a Place with the value that we want to swap
- * @param b Second place with the value that we want to swap
- * @return short Status of the function
- */
-short swap(int *a, int *b)
-{
-
-  int aux = 0;
-
-  /* Checking arguments */
-  if (a == NULL || b == NULL)
-    return ERR;
-
-  /* Swapping the values */
-  aux = *b;
-  *b = *a;
-  *a = aux;
-
-  return OK;
-}
-
 /* Public functions */
 /**
  * @brief Gives a random number 
@@ -45,8 +20,7 @@ short swap(int *a, int *b)
  * @param sup Upper limit
  * @return int Random number
  */
-int random_num(int inf, int sup)
-{
+int random_num(int inf, int sup){
 
   int random = 0;
 
@@ -85,22 +59,18 @@ int *generate_perm(int N) {
     return NULL;
 
   /* Filling the documentation */
-  for (i = 0; i < N; i++)
-  {
+  for (i = 0; i < N; i++) {
     perm[i] = i + 1;
   }
 
   /* Swaping numbers in the permutation */
-  for (i = 0; i < N; i++)
-  {
+  for (i = 0; i < N; i++) {
     random = random_num(i, N - 1);
-    if (random == ERR)
-    {
+    if (random == ERR) {
       free(perm);
       return NULL;
     }
-    if (swap(&perm[i], &perm[random]) != OK)
-    {
+    if (swap(&perm[i], &perm[random]) != OK) {
       free(perm);
       return NULL;
     }
@@ -128,12 +98,10 @@ int **generate_permutations(int n_perms, int N) {
     return NULL;
 
   /* Loop for creating the permutations */
-  for (i = 0; i < n_perms; i++)
-  {
+  for (i = 0; i < n_perms; i++) {
 
     perms[i] = generate_perm(N);
-    if (perms[i] == NULL)
-    {
+    if (perms[i] == NULL) {
       for (n = 0; n < i; n++)
         free(perms[n]);
       free(perms);
@@ -142,4 +110,27 @@ int **generate_permutations(int n_perms, int N) {
   }
 
   return perms;
+}
+
+/**
+ * @brief Function which swaps two elements
+ *
+ * @param first element to be swapped
+ * @param second element to be swapped
+ * @return int Basic operations done
+ */
+int swap(int *el1, int *el2) {
+
+    int aux = 0;
+
+    /* Checking arguments */
+    if (el1 == NULL || el2 == NULL)
+        return ERR;
+
+    /* The swap */
+    aux = *el1;
+    *el1 = *el2;
+    *el2 = aux;
+
+    return OK; /* Doubt if three should be returned or not */
 }

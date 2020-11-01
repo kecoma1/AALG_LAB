@@ -5,7 +5,7 @@
 
 CC = gcc -ansi -pedantic -g
 CFLAGS = -Wall
-EXE = exercise1 exercise2 exercise3 exercise4 exercise5
+EXE = exercise4 exercise5
 
 all : $(EXE)
 
@@ -55,7 +55,7 @@ exercise3_test:
 
 exercise4_test:
 	@echo Running exercise4
-	@./exercise4 -size 5
+	@./exercise4 -size 10
 
 exercise5_test:
 	@echo Running exercise5

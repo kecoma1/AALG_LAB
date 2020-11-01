@@ -11,30 +11,7 @@
  */
 
 #include "sorting.h"
-
-/**
- * @brief Function which swaps two elements
- *
- * @param first element to be swapped
- * @param second element to be swapped
- * @return int Basic operations done
- */
-int swap(int *el1, int *el2)
-{
-
-    int *aux = NULL;
-
-    /* Checking arguments */
-    if (el1 == NULL || el2 == NULL)
-        return -1;
-
-    /* The swap */
-    aux = el1;
-    el1 = el2;
-    el2 = aux;
-
-    return 3; /* Doubt if three should be returned or not */
-}
+#include "permutations.h"
 
 /**
  * @brief Function which sorts an array
@@ -165,15 +142,11 @@ int mergesort(int *table, int ip, int iu) {
  */
 int merge(int *table, int ip, int iu, int imiddle) {
 
-    int i, j, k, size, counter = 0, *table2 = NULL;
+    int i = 0, j = 0, k = 0, size = 0, counter = 0, *table2 = NULL;
 
     /* Checking arguments */
     if (table == NULL || ip < 0 || iu < 0 || iu < ip || imiddle < 0 || ip > imiddle || iu < imiddle)
         return ERR;
-
-    /* In case there's only one integer in the array */
-    if (ip == iu)
-        return OK;
 
     size = iu - ip + 1;
     table2 = (int *)malloc(size * sizeof(table2[0]));
@@ -182,18 +155,18 @@ int merge(int *table, int ip, int iu, int imiddle) {
 
     i = ip;
     j = imiddle + 1;
-    k = iu;
+    k = 0;
     while (i <= imiddle && j <= iu) {
         if (table[i] < table[j]) {
             table2[k] = table[i];
             i++;
-            counter++;
         }
         else {
             table2[k] = table[j];
             j++;
         }
         k++;
+        counter++;
     }
 
     if (i > imiddle) {
@@ -201,6 +174,7 @@ int merge(int *table, int ip, int iu, int imiddle) {
             table2[k] = table[j];
             j++;
             k++;
+            counter++;
         }
     }
     else if (j > iu){
@@ -208,15 +182,17 @@ int merge(int *table, int ip, int iu, int imiddle) {
             table2[k] = table[i];
             i++;
             k++;
+            /* TODO: Comprobar que esto es correcto counter++;*/
         }
     }
 
     /* Copying table2 on table */
-    for (i = ip; i < iu; i++){
-        table[i] = table2[i];
+    for (i = ip, j = 0; i <= iu; i++, j++){
+        table[i] = table2[j];
     }
 
     free(table2);
+    table2 = NULL;
     return counter;
 }
 
@@ -229,28 +205,76 @@ int merge(int *table, int ip, int iu, int imiddle) {
  * @param iu Index of the last element to be sorted
  * @return int Basic operations that the algorithm performs
  */
-int quicksort(int *table, int ip, int iu){
+int quicksort(int *table, int ip, int iu) {
 
-    int m = 0, *pivot = NULL, counter = 0;
+    int pivot = 0, bo = 0, ret = 0;
 
     /* Checking arguments */
     if (table == NULL || ip < 0 || iu < 0 || iu < ip)
         return ERR;
 
+    /* In case there's only one integer in the array */
     if (ip == iu)
-        return m;
+        return OK;
 
-    pivot = (int)malloc(sizeof(int *));
-    if (pivot == NULL)
-        return m;
+    ret = split(table, ip, iu, &pivot);
+    if (ret == ERR) return ERR;
+    bo += ret;
 
-    m = split(table, ip, iu, pivot);
-    if (f < m - 1)
-        counter = quicksort(table, ip, m - 1);
-    if (m + 1 < iu)
-        counter = quicksort(table, m + 1, iu);
+    if (ip < pivot - 1) {
+        ret = quicksort(table, ip, pivot - 1);
+        if (ret == ERR) return ERR;
+        bo += ret;
+    }
+    if (pivot + 1 < iu) {
+        ret = quicksort(table, pivot + 1, iu);
+        if (ret == ERR) return ERR;
+        bo += ret;
+    }
 
-    return counter;
+    return bo;
+}
+
+/**
+ * @brief Function which sorts an array
+ *        with the quicksort algorithm, 
+ *        this version doesn't have recursion
+ * 
+ * @param table Array to be sorted
+ * @param ip Index of the first element to be sorted
+ * @param iu Index of the last element to be sorted
+ * @return int Basic operations that the algorithm performs
+ */
+int quicksort_ntr(int *table, int ip, int iu) {
+    
+    while(){
+        int pivot = 0, bo = 0, ret = 0;
+
+        /* Checking arguments */
+        if (table == NULL || ip < 0 || iu < 0 || iu < ip)
+            return ERR;
+
+        /* In case there's only one integer in the array */
+        if (ip == iu)
+            return OK;
+
+        ret = split(table, ip, iu, &pivot);
+        if (ret == ERR) return ERR;
+        bo += ret;
+
+        if (ip < pivot - 1) {
+            ret = quicksort(table, ip, pivot - 1);
+            if (ret == ERR) return ERR;
+            bo += ret;
+        }
+        if (pivot + 1 < iu) {
+            ret = quicksort(table, pivot + 1, iu);
+            if (ret == ERR) return ERR;
+            bo += ret;
+        }
+    }
+
+    return bo;
 }
 
 /**
@@ -265,31 +289,31 @@ int quicksort(int *table, int ip, int iu){
  */
 int split(int *table, int ip, int iu, int *pos) {
 
-    int counter = 0, k = 0;
+    int ret = 0, counter = 0, k = 0, i = 0;
 
     /* Checking arguments */
     if (table == NULL || ip < 0 || iu < 0 || iu < ip || pos == NULL)
         return ERR;
 
-    counter = median(table, ip, iu, pos);
-    k = *pos;
+    ret = median(table, ip, iu, pos);
+    if (ret == ERR) return ERR;
+    counter += ret;
 
-    counter = swap(table(ip), pos);
-    if (counter == ERR)
-        return ERR;
+    k = table[*pos];
 
-    pos = &ip;
-    for (i = ip + 1; i < iu; i++)
-    {
-        if (table[i] < k)
-        {
-            *pos = *pos + 1;
-            if (swap(table[i], table[*pos]) == -1)
+    if (swap(&table[ip], &table[*pos]) == ERR) return ERR;
+
+    *pos = ip;
+    for (i = ip + 1; i <= iu; i++) {
+        if (table[i] < k) {
+            *pos += 1;
+            if (swap(&table[i], &table[*pos]) == ERR)
                 return ERR;
         }
+        counter++;
     }
 
-    if (swap(table[ip], table[*pos]) == -1)
+    if (swap(&table[ip], &table[*pos]) == ERR)
         return ERR;
 
     return counter;
@@ -311,7 +335,7 @@ int median(int *table, int ip, int iu, int *pos) {
     if (table == NULL || ip < 0 || iu < 0 || iu < ip || pos == NULL)
         return ERR;
 
-    pos = &ip;
+    *pos = ip;
 
-    return 0;
+    return OK;
 }
