@@ -23,64 +23,76 @@
  * @param ptime Structure with all the data of the times and OBs
  * @return short Flag
  */
-short average_sorting_time(pfunc_sort method, 
-                              int n_perms,
-                              int N, 
-                              PTIME_AA ptime) {
+short average_sorting_time(pfunc_sort method,
+                           int n_perms,
+                           int N,
+                           PTIME_AA ptime) {
 
-  clock_t start = 0, end = 0;
-  double total = 0;
-  int **perms = NULL, i = 0, n = 0;
-  long BOs = 0, total_BOs = 0;
-  
-  if (method == NULL || n_perms <= 0 || N <= 0 || ptime == NULL) return ERR;
+    clock_t start = 0, end = 0;
+    double total = 0;
+    int **perms = NULL, i = 0, n = 0;
+    long BOs = 0, total_BOs = 0;
 
-  /* Creating all the permutations */
-  perms = generate_permutations(n_perms, N);
-  if (perms == NULL) return ERR;
+    if (method == NULL || n_perms <= 0 || N <= 0 || ptime == NULL)
+        return ERR;
 
-  start = clock();
-  if (start == (clock_t) -1) {
-    for (i = 0; i < n_perms; n++) free(perms[i]);
+    /* Creating all the permutations */
+    perms = generate_permutations(n_perms, N);
+    if (perms == NULL)
+        return ERR;
+
+    start = clock();
+    if (start == (clock_t)-1)
+    {
+        for (i = 0; i < n_perms; n++)
+            free(perms[i]);
+        free(perms);
+        return ERR;
+    }
+
+    /* Loop to sort all the permutations */
+    for (i = 0; i < n_perms; i++)
+    {
+
+        /* Using the function to sort the array */
+        BOs = method(perms[i], 0, N - 1);
+        if (BOs == ERR)
+        {
+            for (n = 0; n < n_perms; n++)
+                free(perms[n]);
+            free(perms);
+            return ERR;
+        }
+
+        /* Checking the maximum and minimum values of the structure */
+        if (ptime->min_ob == 0 || ptime->min_ob > BOs)
+            ptime->min_ob = BOs;
+        if (ptime->max_ob == 0 || ptime->max_ob < BOs)
+            ptime->max_ob = BOs;
+
+        total_BOs += BOs;
+    }
+
+    end = clock();
+    if (end == (clock_t)-1)
+    {
+        for (i = 0; i < n_perms; n++)
+            free(perms[i]);
+        free(perms);
+        return ERR;
+    }
+
+    /* Assingning the values to the structure */
+    total = ((double)(end - start)) / CLOCKS_PER_SEC;
+    ptime->time = total / n_perms;
+    ptime->N = N;
+    ptime->n_elems = n_perms;
+    ptime->average_ob = ((double)total_BOs) / n_perms;
+    for (i = 0; i < n_perms; i++)
+        free(perms[i]);
     free(perms);
-    return ERR;
-  }
 
-  /* Loop to sort all the permutations */
-  for (i = 0; i < n_perms; i++) {
-
-    /* Using the function to sort the array */
-    BOs = method(perms[i], 0, N-1);
-    if (BOs == ERR) {
-      for (n = 0; n < n_perms; n++) free(perms[n]);
-      free(perms);
-      return ERR;
-    } 
-
-    /* Checking the maximum and minimum values of the structure */
-    if (ptime->min_ob == 0 || ptime->min_ob > BOs) ptime->min_ob = BOs;
-    if (ptime->max_ob == 0 || ptime->max_ob < BOs) ptime->max_ob = BOs;
-
-    total_BOs += BOs;
-  }
-
-  end = clock();
-  if (end == (clock_t) -1) {
-    for (i = 0; i < n_perms; n++) free(perms[i]);
-    free(perms);
-    return ERR;
-  }
-
-  /* Assingning the values to the structure */
-  total = ((double) (end - start)) / CLOCKS_PER_SEC;
-  ptime->time = total / n_perms;
-  ptime->N = N;
-  ptime->n_elems = n_perms;
-  ptime->average_ob = ((double) total_BOs)/n_perms;
-  for(i = 0; i < n_perms; i++) free(perms[i]);
-  free(perms);
-
-  return OK;
+    return OK;
 }
 
 /**
@@ -94,48 +106,52 @@ short average_sorting_time(pfunc_sort method,
  * @param n_perms Number of permutations
  * @return short Flag
  */
-short generate_sorting_times(pfunc_sort method, char* file, 
-                                int num_min, int num_max, 
-                                int incr, int n_perms) {
-  int i = 0, counter = 0, n = 0;
-  PTIME_AA ptime = NULL;
+short generate_sorting_times(pfunc_sort method, char *file,
+                             int num_min, int num_max,
+                             int incr, int n_perms) {
+    int i = 0, counter = 0, n = 0;
+    PTIME_AA ptime = NULL;
 
-  /* Checking arguments */
-  if (method == NULL || file == NULL || num_min < 0 || num_max < 0 || incr < 1 || n_perms < 1)
-    return ERR;
+    /* Checking arguments */
+    if (method == NULL || file == NULL || num_min < 0 || num_max < 0 || incr < 1 || n_perms < 1)
+        return ERR;
 
-  /* Allocating memory for the array of ptimes */
-  counter = ((num_max - num_min) / incr) + 1;
-  ptime = (PTIME_AA)malloc(counter * sizeof(TIME_AA));
-  if (ptime == NULL)
-    return ERR;
+    /* Allocating memory for the array of ptimes */
+    counter = ((num_max - num_min) / incr) + 1;
+    ptime = (PTIME_AA)malloc(counter * sizeof(TIME_AA));
+    if (ptime == NULL)
+        return ERR;
 
-  /* Initializing ptime */
-  for(i = 0; i < counter; i++) {
-    ptime[i].average_ob = 0;
-    ptime[i].max_ob = 0;
-    ptime[i].min_ob = 0;
-    ptime[i].N = 0;
-    ptime[i].n_elems = 0;
-    ptime[i].time = 0;
-  }
-
-  /* Calling the function to get the ptimes */
-  for(i=num_min; i <= num_max; i += incr, n++){
-    if(average_sorting_time(method, n_perms, i, &ptime[n]) == ERR){
-      free(ptime);
-      return ERR;
+    /* Initializing ptime */
+    for (i = 0; i < counter; i++)
+    {
+        ptime[i].average_ob = 0;
+        ptime[i].max_ob = 0;
+        ptime[i].min_ob = 0;
+        ptime[i].N = 0;
+        ptime[i].n_elems = 0;
+        ptime[i].time = 0;
     }
-  }
 
-  /* Calling save_time_table so the information is displayed in the file */
-  if (save_time_table(file, ptime, counter) == ERR){
+    /* Calling the function to get the ptimes */
+    for (i = num_min; i <= num_max; i += incr, n++)
+    {
+        if (average_sorting_time(method, n_perms, i, &ptime[n]) == ERR)
+        {
+            free(ptime);
+            return ERR;
+        }
+    }
+
+    /* Calling save_time_table so the information is displayed in the file */
+    if (save_time_table(file, ptime, counter) == ERR)
+    {
+        free(ptime);
+        return ERR;
+    }
+
     free(ptime);
-    return ERR;
-  }
-
-  free(ptime);
-  return OK;
+    return OK;
 }
 
 /**
@@ -146,31 +162,35 @@ short generate_sorting_times(pfunc_sort method, char* file,
  * @param n_times Times to print
  * @return short Flag
  */
-short save_time_table(char* file, PTIME_AA ptime, int n_times) {
-  
-  int i = 0;
-  FILE *fp = NULL;
+short save_time_table(char *file, PTIME_AA ptime, int n_times) {
 
-  /* Checking arguments */
-  if (file == NULL || ptime == NULL || n_times < 0) return ERR;
+    int i = 0;
+    FILE *fp = NULL;
 
-  /* Opening the file */
-  fp = fopen(file, "w");
-  if (fp == NULL) return ERR;
+    /* Checking arguments */
+    if (file == NULL || ptime == NULL || n_times < 0)
+        return ERR;
 
-  /* Printing all the ptimes */
-  for (i = 0; i < n_times; i++){
-   
-    fprintf(fp, "Number of elements: %d\t"
-            "Size of each element: %d\t"
-            "Average clock time: %e\t"
-            "Average OB executed: %f\t"
-            "Minimun OB executed: %d\t"
-            "Maximun OB executed: %d\t\n", ptime[i].n_elems, ptime[i].N, ptime[i].time, ptime[i].average_ob, ptime[i].min_ob, ptime[i].max_ob);
-  }
+    /* Opening the file */
+    fp = fopen(file, "w");
+    if (fp == NULL)
+        return ERR;
 
-  /* Closing the file */
-  fclose(fp);
-  
-  return OK;
+    /* Printing all the ptimes */
+    for (i = 0; i < n_times; i++)
+    {
+
+        fprintf(fp, "Number of elements: %d\t"
+                    "Size of each element: %d\t"
+                    "Average clock time: %e\t"
+                    "Average OB executed: %f\t"
+                    "Minimun OB executed: %d\t"
+                    "Maximun OB executed: %d\t\n",
+                ptime[i].n_elems, ptime[i].N, ptime[i].time, ptime[i].average_ob, ptime[i].min_ob, ptime[i].max_ob);
+    }
+
+    /* Closing the file */
+    fclose(fp);
+
+    return OK;
 }

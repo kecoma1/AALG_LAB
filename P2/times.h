@@ -15,8 +15,8 @@
 
 /* constants */
 #ifndef ERR
-  #define ERR -1
-  #define OK (!(ERR))
+#define ERR -1
+#define OK (!(ERR))
 #endif
 
 #include "permutations.h"
@@ -25,14 +25,13 @@
 
 /* type definitions */
 typedef struct time_aa {
-  int N;           /* size of each element */
-  int n_elems;     /* number of elements to average */
-  double time;   /* average clock time */
-  double average_ob; /* average number of times that the OB is executed */
-  int min_ob;      /* minimum of executions of the OB */
-  int max_ob;      /* maximum of executions of the OB */
+    int N;             /* size of each element */
+    int n_elems;       /* number of elements to average */
+    double time;       /* average clock time */
+    double average_ob; /* average number of times that the OB is executed */
+    int min_ob;        /* minimum of executions of the OB */
+    int max_ob;        /* maximum of executions of the OB */
 } TIME_AA, *PTIME_AA;
-
 
 /* Functions */
 /**
@@ -47,7 +46,7 @@ typedef struct time_aa {
  * @param ptime Structure with all the data of the times and OBs
  * @return short Flag
  */
-short average_sorting_time(pfunc_sort method, int n_perms,int N, PTIME_AA ptime);
+short average_sorting_time(pfunc_sort method, int n_perms, int N, PTIME_AA ptime);
 
 /**
  * @brief Generates sorting times in a specific file 
@@ -63,7 +62,7 @@ short average_sorting_time(pfunc_sort method, int n_perms,int N, PTIME_AA ptime)
  * @param n_perms Number of permutations
  * @return short Flag
  */
-short generate_sorting_times(pfunc_sort method, char* file, int num_min, int num_max, int incr, int n_perms);
+short generate_sorting_times(pfunc_sort method, char *file, int num_min, int num_max, int incr, int n_perms);
 
 /**
  * @brief Saves all the info in a TIME_AA structure
@@ -75,6 +74,6 @@ short generate_sorting_times(pfunc_sort method, char* file, int num_min, int num
  * @param n_times Times to print
  * @return short Flag
  */
-short save_time_table(char* file, PTIME_AA time, int n_times);
+short save_time_table(char *file, PTIME_AA time, int n_times);
 
 #endif

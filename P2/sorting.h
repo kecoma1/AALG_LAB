@@ -19,12 +19,12 @@
 #include <stdio.h>
 
 #ifndef ERR
-  #define ERR -1
-  #define OK (!(ERR))
+#define ERR -1
+#define OK (!(ERR))
 #endif
 
 /* type definitions */
-typedef int (* pfunc_sort)(int*, int, int);
+typedef int (*pfunc_sort)(int *, int, int);
 
 /* Functions */
 
@@ -37,7 +37,7 @@ typedef int (* pfunc_sort)(int*, int, int);
  * @param iu Index of the last element to be sorted
  * @return int Basic operations done
  */
-int InsertSort(int* table, int ip, int iu);
+int InsertSort(int *table, int ip, int iu);
 
 /**
  * @brief Function which sorts an array
@@ -49,7 +49,7 @@ int InsertSort(int* table, int ip, int iu);
  * @param iu Index of the last element to be sorted
  * @return int Basic operations done
  */
-int InsertSortInv(int* table, int ip, int iu);
+int InsertSortInv(int *table, int ip, int iu);
 
 /**
  * @brief Function which sorts an array
@@ -60,7 +60,7 @@ int InsertSortInv(int* table, int ip, int iu);
  * @param iu Index of the last element to be sorted
  * @return int Basic operations that the algorithm performs
  */
-int mergesort(int* table, int ip, int iu);
+int mergesort(int *table, int ip, int iu);
 
 /**
  * @brief Function used by mergesort which
@@ -72,7 +72,7 @@ int mergesort(int* table, int ip, int iu);
  * @param imiddle Middle index that separates both tables
  * @return int Basic operations that the function performs
  */
-int merge(int* table, int ip, int iu, int imiddle);
+int merge(int *table, int ip, int iu, int imiddle);
 
 /**
  * @brief Function which sorts an array
@@ -83,7 +83,7 @@ int merge(int* table, int ip, int iu, int imiddle);
  * @param iu Index of the last element to be sorted
  * @return int Basic operations that the algorithm performs
  */
-int quicksort(int* table, int ip, int iu);
+int quicksort(int *table, int ip, int iu);
 
 /**
  * @brief Function used by quicksort which
@@ -95,7 +95,7 @@ int quicksort(int* table, int ip, int iu);
  * @param pos Variable where we are going to store the value of the pivot
  * @return int Basic operations that the function performs
  */
-int split(int* table, int ip, int iu, int* pos);
+int split(int *table, int ip, int iu, int *pos);
 
 /**
  * @brief Function used by quicksort which
