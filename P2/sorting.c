@@ -14,6 +14,29 @@
 #include "sorting.h"
 
 /**
+ * @brief Function which swaps two elements
+ *
+ * @param first element to be swapped
+ * @param second element to be swapped
+ * @return int Basic operations done
+ */
+int swap (int* el1, int* el2){
+
+  int *aux = NULL;
+
+  /* Checking arguments */
+  if (el1 == NULL || el2 == NULL)
+    return -1;
+
+  /* The swap */
+  aux = el1;
+  el1 = el2;
+  el2 = aux;
+
+  return 3; /* Doubt if three should be returned or not */
+}
+
+/**
  * @brief Function which sorts an array
  *        with the algorithm InsertSort
  * 
@@ -26,6 +49,7 @@ int InsertSort(int* table, int ip, int iu) {
 
   int i = 0, j = 0, A = 0, counter = 0;
 
+  /* Checking arguments */
   if (table == NULL || ip < 0 || iu < 0 || iu < ip) return ERR;
   
   for (i = ip+1; i <= iu; i++) {
@@ -58,6 +82,7 @@ int InsertSortInv(int* table, int ip, int iu) {
   
   int i = 0, j = 0, A = 0, counter = 0;
 
+  /* Checking arguments */
   if (table == NULL || ip < 0 || iu < 0 || iu < ip)
     return ERR;
 
@@ -88,9 +113,22 @@ int InsertSortInv(int* table, int ip, int iu) {
  */
 int mergesort(int* table, int ip, int iu) {
 
+  int m = 0, bo = 0;
+
+  /* Checking arguments */
   if (table == NULL || ip < 0 || iu < 0 || iu < ip) 
     return ERR;
 
+  /* In case there's only one integer in the array */
+  if (ip == iu)
+    return bo;
+
+  /* Getting the middle value of the array */
+  m = (ip + iu)/2;
+
+  bo += mergesort(table, ip, m);
+  bo += mergesort(table, m + 1, iu);
+  return merge(table, ip, iu, m);
 }
 
 /**
@@ -105,9 +143,57 @@ int mergesort(int* table, int ip, int iu) {
  */
 int merge(int* table, int ip, int iu, int imiddle) {
 
+  int i, j, k, counter = 0, *table2 = NULL;
+
+  /* Checking arguments */
   if (table == NULL || ip < 0 || iu < 0 || iu < ip || imiddle < 0 || ip > imiddle || iu < imiddle) 
     return ERR;
 
+  /* In case there's only one integer in the array */
+  if (ip == iu)
+    return counter;
+
+  size = iu - ip;
+  table2 = (int*)malloc(size * sizeof(int));
+  if (table2 == NULL)
+    return ERR;
+
+  i = ip;
+  j = imiddle + 1;
+  k = iu;
+  while (i <= imiddle && j <= iu){
+    if (table[i] < table[j]){
+      table2[k] = table[i];
+      i++;
+      counter++;
+    } else {
+      table2[k] = table[j];
+      j++;
+    }
+    k++;
+  }
+
+  if (i > imiddle){
+    while (j <= iu){
+      table2[k] = table[j];
+      j++;
+      k++;
+    }
+  } else if (j > iu){
+    while (i <= imiddle){
+      table2[k] = table[i];
+      i++;
+      k++;
+    }
+  }
+  
+  /* Copying table2 on table */
+  for(i = ip; i < iu; i++){
+    table[i] = table2[i];
+  }
+
+  free(table2);
+  return counter;
 }
 
 /**
@@ -121,8 +207,26 @@ int merge(int* table, int ip, int iu, int imiddle) {
  */
 int quicksort(int* table, int ip, int iu) {
 
+  int m = 0, *pivot = NULL, counter = 0;
+
+  /* Checking arguments */
   if (table == NULL || ip < 0 || iu < 0 || iu < ip)
     return ERR;
+
+  if (ip == iu)
+    return m;
+
+  pivot = (int)malloc(sizeof(int*));
+  if (pivot == NULL)
+    return m;
+
+  m = split(table, ip, iu, pivot);
+  if(f < m-1)
+    counter = quicksort(table, ip, m-1);
+  if(m+1 < iu)
+    counter = quicksort(table, m+1, iu);
+
+  return counter;
 }
 
 /**
@@ -137,8 +241,32 @@ int quicksort(int* table, int ip, int iu) {
  */
 int split(int* table, int ip, int iu, int* pos) {
 
+  int counter = 0, k = 0;
+
+  /* Checking arguments */
   if (table == NULL || ip < 0 || iu < 0 || iu < ip || pos == NULL)
     return ERR;
+
+  counter = median(table, ip, iu, pos);
+  k = *pos;
+
+  counter = swap(table(ip), pos);
+  if (counter == ERR)
+    return ERR;
+
+  pos = &ip;
+  for (i = ip+1; i < iu; i++){
+    if (table[i]<k){
+      *pos = *pos + 1;
+      if (swap(table[i], table[*pos]) == -1)
+        return ERR;
+    }
+  }
+
+  if (swap(table[ip], table[*pos]) == -1)
+    return ERR;
+
+  return counter;
 }
 
 /**
@@ -153,6 +281,11 @@ int split(int* table, int ip, int iu, int* pos) {
  */
 int median(int *table, int ip, int iu, int *pos) {
   
+  /* Checking arguments */
   if (table == NULL || ip < 0 || iu < 0 || iu < ip || pos == NULL)
     return ERR;
+
+  pos = &ip;
+
+  return 0;
 }
