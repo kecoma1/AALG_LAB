@@ -247,31 +247,28 @@ int quicksort(int *table, int ip, int iu) {
  */
 int quicksort_ntr(int *table, int ip, int iu) {
     
-    while(){
-        int pivot = 0, bo = 0, ret = 0;
+    int pivot = 0, bo = 0, ret = 0;
 
-        /* Checking arguments */
-        if (table == NULL || ip < 0 || iu < 0 || iu < ip)
-            return ERR;
+    /* Checking arguments */
+    if (table == NULL || ip < 0 || iu < 0 || iu < ip)
+        return ERR;
 
-        /* In case there's only one integer in the array */
-        if (ip == iu)
-            return OK;
+    /* In case there's only one integer in the array */
+    if (ip == iu)
+        return OK;
+    
+    while(ip != iu && ip <= iu){
 
         ret = split(table, ip, iu, &pivot);
         if (ret == ERR) return ERR;
         bo += ret;
 
         if (ip < pivot - 1) {
-            ret = quicksort(table, ip, pivot - 1);
+            ret = quicksort_ntr(table, ip, pivot - 1);
             if (ret == ERR) return ERR;
             bo += ret;
         }
-        if (pivot + 1 < iu) {
-            ret = quicksort(table, pivot + 1, iu);
-            if (ret == ERR) return ERR;
-            bo += ret;
-        }
+        ip = pivot+1;
     }
 
     return bo;

@@ -86,6 +86,18 @@ int merge(int *table, int ip, int iu, int imiddle);
 int quicksort(int *table, int ip, int iu);
 
 /**
+ * @brief Function which sorts an array
+ *        with the quicksort algorithm, 
+ *        this version doesn't have recursion
+ * 
+ * @param table Array to be sorted
+ * @param ip Index of the first element to be sorted
+ * @param iu Index of the last element to be sorted
+ * @return int Basic operations that the algorithm performs
+ */
+int quicksort_ntr(int *table, int ip, int iu);
+
+/**
  * @brief Function used by quicksort which
  *        splits the table in two parts
  * 

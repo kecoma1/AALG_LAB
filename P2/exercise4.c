@@ -49,12 +49,11 @@ int main(int argc, char** argv)
     exit(-1);
   }
 
-  InsertSortInv(perm, 0, tamano-1);
   for(j = 0; j < tamano; j++) {
-    printf("%d \t", perm[j]);
+    printf("%d ", perm[j]);
   }
   printf("\n");
-  ret = quicksort(perm, 0, tamano-1);
+  ret = quicksort_ntr(perm, 0, tamano-1);
   printf("BO: %d\n", ret);
 
   if (ret == ERR) {
@@ -64,7 +63,7 @@ int main(int argc, char** argv)
   }
 
   for(j = 0; j < tamano; j++) {
-    printf("%d \t", perm[j]);
+    printf("%d ", perm[j]);
   }
   printf("\n");
 
