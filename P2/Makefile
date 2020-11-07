@@ -55,9 +55,9 @@ exercise3_test:
 
 exercise4_test:
 	@echo Running exercise4
-	@./exercise4 -size 63
+	@./exercise4 -size 5
 
 exercise5_test:
 	@echo Running exercise5
-	@./exercise5 -num_min 10 -num_max 50 -incr 1 -numP 1000 -outputFile exercise5_test.log
+	@./exercise5 -num_min 1000 -num_max 100000 -incr 1000 -numP 100 -outputFile quick_sort_ntr.log
 	

@@ -84,7 +84,7 @@ short average_sorting_time(pfunc_sort method,
 
     /* Assingning the values to the structure */
     total = ((double)(end - start)) / CLOCKS_PER_SEC;
-    ptime->time = total / n_perms;
+    ptime->time = total / (double) n_perms;
     ptime->N = N;
     ptime->n_elems = n_perms;
     ptime->average_ob = ((double)total_BOs) / n_perms;
@@ -121,17 +121,6 @@ short generate_sorting_times(pfunc_sort method, char *file,
     ptime = (PTIME_AA)malloc(counter * sizeof(TIME_AA));
     if (ptime == NULL)
         return ERR;
-
-    /* Initializing ptime */
-    for (i = 0; i < counter; i++)
-    {
-        ptime[i].average_ob = 0;
-        ptime[i].max_ob = 0;
-        ptime[i].min_ob = 0;
-        ptime[i].N = 0;
-        ptime[i].n_elems = 0;
-        ptime[i].time = 0;
-    }
 
     /* Calling the function to get the ptimes */
     for (i = num_min; i <= num_max; i += incr, n++)
