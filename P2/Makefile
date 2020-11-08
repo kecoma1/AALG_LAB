@@ -3,7 +3,7 @@
 # It is assumed that the name of the source files is exercise1.c, exercise2.c,...,exercise.h
 #-----------------------
 
-CC = gcc -ansi -pedantic -g
+CC = gcc -ansi -pedantic -g -O2
 CFLAGS = -Wall
 EXE = exercise4 exercise5
 
@@ -59,5 +59,5 @@ exercise4_test:
 
 exercise5_test:
 	@echo Running exercise5
-	@./exercise5 -num_min 1000 -num_max 100000 -incr 1000 -numP 100 -outputFile quick_sort_ntr_long.log
+	@./exercise5 -num_min 1000 -num_max 10000 -incr 100 -numP 100 -outputFile test.log
 	
