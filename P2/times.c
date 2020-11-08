@@ -130,6 +130,7 @@ short generate_sorting_times(pfunc_sort method, char *file,
             free(ptime);
             return ERR;
         }
+        printf("Size: %d. DONE\n", i);
     }
 
     /* Calling save_time_table so the information is displayed in the file */
@@ -167,7 +168,7 @@ short save_time_table(char *file, PTIME_AA ptime, int n_times) {
 
     /* Printing all the ptimes */
     for (i = 0; i < n_times; i++) {
-        fprintf(fp, "%d\t, %d\t, %e\t, %f\t, %d\t, %d\t\n",
+        fprintf(fp, "%d\t %d\t %e\t %f\t %d\t %d\t\n",
                 ptime[i].n_elems, ptime[i].N, ptime[i].time, ptime[i].average_ob, ptime[i].min_ob, ptime[i].max_ob);
     }
 
