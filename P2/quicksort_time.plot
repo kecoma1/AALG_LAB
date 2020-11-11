@@ -7,12 +7,12 @@ set ylabel "Time spent"
 
 #Range
 set xrange [1000:100000]
-set yrange [0:0.01]
+set yrange [0:0.009]
 
 #fit line
 f(x) = a*x*log(x*b)
-fit f(x) "quick_sort.log" using 2:3 via a, b
+fit f(x) "quicksort.log" using 2:3 via a, b
 
 #Plotting
-plot "quick_sort.log" using 2:3 title "Average Time spent",\
+plot "quicksort.log" using 2:3 title "Average Time spent",\
 f(x) title "fit line (Average case) - a*x*log(x*b)"
