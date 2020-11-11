@@ -174,7 +174,6 @@ int merge(int *table, int ip, int iu, int imiddle) {
             table2[k] = table[j];
             j++;
             k++;
-            counter++;
         }
     }
     else if (j > iu){
@@ -182,7 +181,6 @@ int merge(int *table, int ip, int iu, int imiddle) {
             table2[k] = table[i];
             i++;
             k++;
-            /* TODO: Comprobar que esto es correcto counter++;*/
         }
     }
 
