@@ -332,5 +332,5 @@ int median(int *table, int ip, int iu, int *pos) {
 
     *pos = ip;
 
-    return OK;
+    return 0;
 }
