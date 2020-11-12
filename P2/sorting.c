@@ -132,7 +132,8 @@ int mergesort(int *table, int ip, int iu) {
 
 /**
  * @brief Function used by mergesort which
- *        merges (sorts) two tables
+ *        merges (sorts) one table divided
+ *		  by a middle index.
  * 
  * @param table Array to be sorted
  * @param ip Index of the first element to be sorted
