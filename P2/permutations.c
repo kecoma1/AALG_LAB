@@ -117,7 +117,8 @@ int **generate_permutations(int n_perms, int N) {
  *
  * @param first element to be swapped
  * @param second element to be swapped
- * @return int Basic operations done
+ * @return int State of the function 
+ *             ERR if fail, OK if success
  */
 int swap(int *el1, int *el2) {
 
@@ -132,5 +133,5 @@ int swap(int *el1, int *el2) {
     *el1 = *el2;
     *el2 = aux;
 
-    return OK; /* Doubt if three should be returned or not */
+    return OK;
 }
