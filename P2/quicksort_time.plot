@@ -14,5 +14,5 @@ f(x) = a*x*log(x*b)
 fit f(x) "quicksort.log" using 2:3 via a, b
 
 #Plotting
-plot "quicksort.log" using 2:3 title "Average Time spent",\
-f(x) title "fit line (Average case) - a*x*log(x*b)"
+plot "quicksort.log" using 2:3 title "Average Time spent  2·Nlog(N)+O(N)" with line,\
+f(x) title "fit line (Average case)"

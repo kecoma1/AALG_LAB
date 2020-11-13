@@ -6,7 +6,7 @@ set xlabel "Size of the permutation"
 set ylabel "Basic operations"
 
 #Range
-set xrange [1000:100000]
+set xrange [0:100000]
 set yrange [0:2700000]
 
 #fit lines
@@ -20,9 +20,9 @@ t(x) = f*x*log(x*g)
 fit t(x) "quicksort.log" using 2:5 via f, g
 
 #Plotting
-plot "quicksort.log" using 2:4 title "Average BO" with lines,\
-f(x) title "fit line (Average) - a*x*log(x*b)",\
-"quicksort.log" using 2:5 title "Minimun BO" with lines,\
-t(x) title "fit line (Minimum) - f*x*log(x*g)",\
-"quicksort.log" using 2:6 title "Maximun BO" with lines,\
-g(x) title "fit line (Maximum) - c*x**2+d*x+e"
+plot "quicksort.log" using 2:4 title "Average BO  2·Nlog(N)+O(N)" with lines,\
+f(x) title "fit line (Average)",\
+"quicksort.log" using 2:5 title "Minimun BO  O(n·log(n))" with lines,\
+t(x) title "fit line (Minimum)",\
+"quicksort.log" using 2:6 title "Maximun BO  N²/2 - N/2" with lines,\
+g(x) title "fit line (Maximum)"
