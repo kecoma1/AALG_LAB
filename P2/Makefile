@@ -59,5 +59,5 @@ exercise4_test:
 
 exercise5_test:
 	@echo Running exercise5
-	@./exercise5 -num_min 1000 -num_max 100000 -incr 100 -numP 100 -outputFile quicksort_ntr.log
+	@./exercise5 -num_min 1 -num_max 10 -incr 1 -numP 10000000 -outputFile quicksort_small_sample.log
 	
