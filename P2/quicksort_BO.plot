@@ -6,8 +6,8 @@ set xlabel "Size of the permutation"
 set ylabel "Basic operations"
 
 #Range
-set xrange [0:1000]
-set yrange [0:20000]
+set xrange [0:100000]
+set yrange [0:2500000]
 
 #fit lines
 f(x) = a*x*log(x*b)
