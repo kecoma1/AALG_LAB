@@ -1,0 +1,26 @@
+Mergesort
+
+exercise4.c was modified in order to check the correctness of the function.
+
+./exercise4 -size 10
+1 2 3 4 5 6 7 8 9 10
+
+Given a random permutation the mergesort function sorts it in the expected way.
+
+Quicksort
+
+exercise4.c was modified in order to check the correctness of the function.
+
+./exercise4 -size 10
+1 2 3 4 5 6 7 8 9 10
+
+Given a random permutation the Quicksort function sorts it in the expected way.
+
+Quicksort_ntr
+
+exercise4.c was modified in order to check the correctness of the function.
+
+./exercise4 -size 10
+1 2 3 4 5 6 7 8 9 10
+
+Given a random permutation the Quicksort_ntr function sorts it in the expected way.
