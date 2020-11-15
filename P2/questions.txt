@@ -1,0 +1,27 @@
+3.
+
+Mergesort
+Best case - (1/2)·N·log(N)
+Worst case - N·log(N)+O(N)
+Average case - Θ(N·log(N))
+
+Quicksort
+Best case - N²/2 - N/2
+Worst case - O(n·log(n))
+Average case - 2·Nlog(N)+O(N)
+
+In order to calculate strictly each case of the algorithm we should at least make N! permutations to sort, but even we sorted N! in each iteration, it's possible that the worst case or the best case is not generated. 
+To sum up, we have to generate more than N!.
+
+2.
+If we compare the time performance we can see that there are not differences between both algorithms, this also happens comparing the basic operations. The only improvement is regarding with the stack. Removing the tail reculsion makes the algorithm use less stack, so this is the only improvement.
+
+1. 
+Mergesort
+Average case - Θ(N·log(N))
+We generated a file where we sorted 10000000 permutations from size = 1 to 10.
+lim 22,66/10·log(10) = 2,62 != 0
+
+Quicksort
+Average case - 2·Nlog(N)+O(N) -> 2*10*log10 + O(10) = 20 + O(10), O(10) = C*10 where C is bigger or equal to 0.
+We have that the average case with size 10 in 10000000 permutations is 24,43 so 20+O(10) aprox 24,43
