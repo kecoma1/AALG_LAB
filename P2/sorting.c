@@ -256,7 +256,7 @@ int quicksort_ntr(int *table, int ip, int iu) {
     if (ip == iu)
         return OK;
     
-    while(ip != iu && ip <= iu){
+    while(ip < iu){
 
         ret = split(table, ip, iu, &pivot);
         if (ret == ERR) return ERR;
