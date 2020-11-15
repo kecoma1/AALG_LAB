@@ -25,7 +25,7 @@
 
 int main(int argc, char** argv)
 {
-  int i, num_min, num_max, incr, n_perms;
+  int i = 0, num_min = 0, num_max = 0, incr = 0, n_perms = 0;
   char nombre[256];
   short ret;
 

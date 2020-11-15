@@ -130,7 +130,6 @@ short generate_sorting_times(pfunc_sort method, char *file,
             free(ptime);
             return ERR;
         }
-        printf("%d\n", i);
     }
 
     /* Calling save_time_table so the information is displayed in the file */
