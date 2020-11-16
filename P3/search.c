@@ -63,8 +63,7 @@ void potential_key_generator(int *keys, int n_keys, int max)
  * @param order Order of the table. Ordered or not ordered
  * @return PDICT Created dictionary  
  */
-PDICT init_dictionary (int size, char order)
-{
+PDICT init_dictionary (int size, char order) {
 	/* your code */
 }
 
@@ -73,8 +72,7 @@ PDICT init_dictionary (int size, char order)
  * 
  * @param pdict Dictionary to free 
  */
-void free_dictionary(PDICT pdict)
-{
+void free_dictionary(PDICT pdict) {
 	/* your code */
 }
 
@@ -85,8 +83,7 @@ void free_dictionary(PDICT pdict)
  * @param key Key to insert
  * @return int Status of the function, OK or ERR
  */
-int insert_dictionary(PDICT pdict, int key)
-{
+int insert_dictionary(PDICT pdict, int key) {
 	/* your code */
 }
 
@@ -98,8 +95,7 @@ int insert_dictionary(PDICT pdict, int key)
  * @param n_keys Number of keys to be inserted
  * @return int Status of the function, OK or ERR
  */
-int massive_insertion_dictionary (PDICT pdict,int *keys, int n_keys)
-{
+int massive_insertion_dictionary (PDICT pdict,int *keys, int n_keys) {
 	/* your code */
 }
 
@@ -113,8 +109,7 @@ int massive_insertion_dictionary (PDICT pdict,int *keys, int n_keys)
  * @param method Method to use for searching
  * @return int Status of the function, OK or ERR
  */
-int search_dictionary(PDICT pdict, int key, int *ppos, pfunc_search method)
-{
+int search_dictionary(PDICT pdict, int key, int *ppos, pfunc_search method) {
 	/* your code */
 }
 
@@ -132,8 +127,7 @@ int search_dictionary(PDICT pdict, int key, int *ppos, pfunc_search method)
  *             to store the index of the key
  * @return int Basic operations done
  */
-int bin_search(int *table,int F,int L,int key, int *ppos)
-{
+int bin_search(int *table,int F,int L,int key, int *ppos) {
 	/* your code */
 }
 
@@ -149,8 +143,7 @@ int bin_search(int *table,int F,int L,int key, int *ppos)
  *             to store the index of the key
  * @return int Basic operations done
  */
-int lin_search(int *table,int F,int L,int key, int *ppos)
-{
+int lin_search(int *table,int F,int L,int key, int *ppos) {
 	/* your code */
 }
 
@@ -166,8 +159,7 @@ int lin_search(int *table,int F,int L,int key, int *ppos)
  *             to store the index of the key
  * @return int Basic operations done
  */
-int lin_auto_search(int *table,int F,int L,int key, int *ppos)
-{
+int lin_auto_search(int *table,int F,int L,int key, int *ppos) {
 	/* your code */
 }
 

@@ -97,7 +97,8 @@ short generate_search_times(pfunc_search method, pfunc_key_generator generator,
                                 int incr, int n_times);
 
 /**
- * @brief 
+ * @brief Given a size, a method and a key generator, the function searches in a table
+ *        the generated keys n_times times 
  * 
  * @param method Function to use in order to search keys
  * @param generator Generator which generates keys 
