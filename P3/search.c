@@ -22,7 +22,7 @@
  * 				 keys are returned in the keys parameter which must be 
  *				 allocated externally to the function.
  */
-  
+
 /**
  *  Function: uniform_key_generator
  *               This function generates all keys from 1 to max in a sequential
@@ -30,11 +30,12 @@
  */
 void uniform_key_generator(int *keys, int n_keys, int max)
 {
-  int i;
+    int i;
 
-  for(i = 0; i < n_keys; i++) keys[i] = 1 + (i % max);
+    for (i = 0; i < n_keys; i++)
+        keys[i] = 1 + (i % max);
 
-  return;
+    return;
 }
 
 /**
@@ -46,14 +47,14 @@ void uniform_key_generator(int *keys, int n_keys, int max)
  */
 void potential_key_generator(int *keys, int n_keys, int max)
 {
-  int i;
+    int i;
 
-  for(i = 0; i < n_keys; i++) 
-  {
-    keys[i] = .5+max/(1 + max*((double)rand()/(RAND_MAX)));
-  }
+    for (i = 0; i < n_keys; i++)
+    {
+        keys[i] = .5 + max / (1 + max * ((double)rand() / (RAND_MAX)));
+    }
 
-  return;
+    return;
 }
 
 /**
@@ -63,8 +64,34 @@ void potential_key_generator(int *keys, int n_keys, int max)
  * @param order Order of the table. Ordered or not ordered
  * @return PDICT Created dictionary  
  */
-PDICT init_dictionary (int size, char order) {
-	/* your code */
+PDICT init_dictionary(int size, char order) {
+
+    PDICT pdict;
+    int i = 0;
+
+    if (size <= 0 || (order != SORTED || order != NOT_SORTED))
+        return NULL;
+
+    pdict = (PDICT)malloc(sizeof(DICT));
+    if (pdict == NULL)
+        return NULL;
+
+    /* Initializing the variables */
+    pdict->n_data = 0;
+    pdict->size = size;
+    pdict->order = order;
+
+    /* Reserving memory for the table */
+    pdict->table = (int *)malloc(size * sizeof(pdict->table[0]));
+    if (pdict->table == NULL) {
+        free(pdict);
+        return NULL;
+    }
+
+    /* Initializing the table */
+    for (i = 0; i < size; i++) pdict->table[i] = 0;
+
+    return pdict;
 }
 
 /**
@@ -73,7 +100,10 @@ PDICT init_dictionary (int size, char order) {
  * @param pdict Dictionary to free 
  */
 void free_dictionary(PDICT pdict) {
-	/* your code */
+    if (pdict == NULL) return;
+
+    if (pdict->table != NULL) free(pdict->table);
+    free(pdict);
 }
 
 /**
@@ -81,10 +111,39 @@ void free_dictionary(PDICT pdict) {
  * 
  * @param pdict Dictionary where the key is going to be inserted
  * @param key Key to insert
- * @return int Status of the function, OK or ERR
+ * @return int Basic operations done
  */
 int insert_dictionary(PDICT pdict, int key) {
-	/* your code */
+    
+    int j = 0, BO = 0;
+
+    if (pdict == NULL || key <= 0) return ERR;
+
+    /* Checking how the table is sorted and if it is full */
+    if (pdict->order == NOT_SORTED && pdict->n_data < pdict->size) {
+
+        pdict->table[pdict->n_data] = key;
+        pdict->n_data += 1;
+
+        /* We didn't do any basic operation */
+        return BO;
+    } else if (pdict->order == NOT_SORTED && pdict->n_data < pdict->size) {
+
+        pdict->table[pdict->size - 1] = key;
+        j = pdict->size - 1;
+        
+        while (j >= 0) {
+            if (pdict->table[j] > key) {
+                pdict->table[j+1] = pdict->table[j];
+                j--;
+            } else break;
+            BO++;
+        }
+        pdict->table[j+1] = key;
+        pdict->n_data += 1;
+    }
+
+    return ERR;
 }
 
 /**
@@ -93,10 +152,27 @@ int insert_dictionary(PDICT pdict, int key) {
  * @param pdict Dictionary where the keys are going to be inserted
  * @param keys Keys to be inserted
  * @param n_keys Number of keys to be inserted
- * @return int Status of the function, OK or ERR
+ * @return int Basic operations done
  */
-int massive_insertion_dictionary (PDICT pdict,int *keys, int n_keys) {
-	/* your code */
+int massive_insertion_dictionary(PDICT pdict, int *keys, int n_keys) {
+    
+    int i = 0, BO = 0, ret = 0;
+
+    if (pdict == NULL || keys == NULL || n_keys <= 0) return ERR;
+
+    /* Checking if there's enough space */
+    if (pdict->size < (pdict->n_data + n_keys)) return ERR;
+
+    /* Inserting keys */
+    for (i = 0; i < n_keys; i++) {
+
+        if (keys[i] <= 0) return ERR;
+        ret = insert_dictionary(pdict, keys[i]);
+        if (ret == ERR) return ERR;
+        BO += ret;
+    }
+
+    return BO;
 }
 
 /**
@@ -107,12 +183,11 @@ int massive_insertion_dictionary (PDICT pdict,int *keys, int n_keys) {
  * @param ppos Variable passed by reference where we are going 
  *             to store the index of the key
  * @param method Method to use for searching
- * @return int Status of the function, OK or ERR
+ * @return int Basic operations done
  */
 int search_dictionary(PDICT pdict, int key, int *ppos, pfunc_search method) {
-	/* your code */
+    /* your code */
 }
-
 
 /* Search functions of the Dictionary ADT */
 /**
@@ -127,8 +202,8 @@ int search_dictionary(PDICT pdict, int key, int *ppos, pfunc_search method) {
  *             to store the index of the key
  * @return int Basic operations done
  */
-int bin_search(int *table,int F,int L,int key, int *ppos) {
-	/* your code */
+int bin_search(int *table, int F, int L, int key, int *ppos) {
+    /* your code */
 }
 
 /**
@@ -143,8 +218,8 @@ int bin_search(int *table,int F,int L,int key, int *ppos) {
  *             to store the index of the key
  * @return int Basic operations done
  */
-int lin_search(int *table,int F,int L,int key, int *ppos) {
-	/* your code */
+int lin_search(int *table, int F, int L, int key, int *ppos) {
+    /* your code */
 }
 
 /**
@@ -159,8 +234,6 @@ int lin_search(int *table,int F,int L,int key, int *ppos) {
  *             to store the index of the key
  * @return int Basic operations done
  */
-int lin_auto_search(int *table,int F,int L,int key, int *ppos) {
-	/* your code */
+int lin_auto_search(int *table, int F, int L, int key, int *ppos) {
+    /* your code */
 }
-
-

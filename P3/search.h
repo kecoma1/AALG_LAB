@@ -58,7 +58,7 @@ void free_dictionary(PDICT pdict);
  * 
  * @param pdict Dictionary where the key is going to be inserted
  * @param key Key to insert
- * @return int Status of the function, OK or ERR
+ * @return int Basic operations done
  */
 int insert_dictionary(PDICT pdict, int key);
 
@@ -68,7 +68,7 @@ int insert_dictionary(PDICT pdict, int key);
  * @param pdict Dictionary where the keys are going to be inserted
  * @param keys Keys to be inserted
  * @param n_keys Number of keys to be inserted
- * @return int Status of the function, OK or ERR
+ * @return int Basic operations done
  */
 int massive_insertion_dictionary (PDICT pdict,int *keys, int n_keys);
 
@@ -80,7 +80,7 @@ int massive_insertion_dictionary (PDICT pdict,int *keys, int n_keys);
  * @param ppos Variable passed by reference where we are going 
  *             to store the index of the key
  * @param method Method to use for searching
- * @return int Status of the function, OK or ERR
+ * @return int Basic operations done
  */
 int search_dictionary(PDICT pdict, int key, int *ppos, pfunc_search method);
 
