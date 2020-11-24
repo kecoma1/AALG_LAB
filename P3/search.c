@@ -10,6 +10,7 @@
  */
 
 #include "search.h"
+#include "permutations.h"
 
 #include <stdlib.h>
 #include <math.h>
@@ -127,7 +128,7 @@ int insert_dictionary(PDICT pdict, int key) {
 
         /* We didn't do any basic operation */
         return BO;
-    } else if (pdict->order == NOT_SORTED && pdict->n_data < pdict->size) {
+    } else if (pdict-/* your code */>order == NOT_SORTED && pdict->n_data < pdict->size) {
 
         pdict->table[pdict->size - 1] = key;
         j = pdict->size - 1;
@@ -219,11 +220,30 @@ int bin_search(int *table, int F, int L, int key, int *ppos) {
  * @return int Basic operations done
  */
 int lin_search(int *table, int F, int L, int key, int *ppos) {
-    /* your code */
+    
+    int i = 0, BO = 0;
+
+    if (table == NULL || F < 0 || L < 0 || L < F || key <= 0 || ppos == NULL)
+        return ERR;
+
+    /* Iterating through all the elements of the array */
+    for (i = 0; i <= L; i++) {
+        BO++;
+
+        /* Key found, saving index */
+        if (table[i] == key) {
+            *ppos = i;
+            return BO;
+        }
+    }
+
+    /* If we reach this point it means that we didn't find the key */
+    *ppos = NOT_FOUND;
+    return BO;
 }
 
 /**
- * @brief Function that searches a key as its done in the linear sort 
+ * @brief Function that searches a key as its done in the linear search 
  *        algorithm but when the key is founded we swap it with the previous one
  * 
  * @param table Table where we have to search
@@ -235,5 +255,29 @@ int lin_search(int *table, int F, int L, int key, int *ppos) {
  * @return int Basic operations done
  */
 int lin_auto_search(int *table, int F, int L, int key, int *ppos) {
-    /* your code */
+    
+    int i = 0, BO = 0;
+
+    if (table == NULL || F < 0 || L < 0 || L < F || key <= 0 || ppos == NULL)
+        return ERR;
+
+    /* Iterating through all the elements of the array */
+    for (i = 0; i <= L; i++) {
+        BO++;
+
+        /* Key found, saving index */
+        if (table[i] == key) {
+            *ppos = i;
+
+            /* Swapping */
+            if (i > 0) swap(table[i], table[i-1]);
+            
+            *ppos = i;
+            return BO;
+        }
+    }
+
+    /* If we reach this point it means that we didn't find the key */
+    *ppos = NOT_FOUND;
+    return BO;
 }
