@@ -24,7 +24,7 @@ int main(int argc, char** argv)
 {
   int i, nob, pos;
   unsigned int key, size;
-  PDICT pdict;
+  PDICT pdict, pdict_ordered;
   int *perm;
 
   srand(time(NULL));
@@ -56,7 +56,14 @@ int main(int argc, char** argv)
   pdict = init_dictionary(size,NOT_SORTED);
   if (pdict == NULL) {
     /* error */
-    printf("Error: Dictionary could not be initialized\n");
+    printf("Error: Unordered Dictionary could not be initialized\n");
+    exit(-1);
+  }
+
+  pdict_ordered = init_dictionary(size,SORTED);
+  if (pdict_ordered == NULL) {
+    /* error */
+    printf("Error: Ordered Dictionary could not be initialized\n");
     exit(-1);
   }
 
@@ -79,6 +86,7 @@ int main(int argc, char** argv)
     exit(-1);
   }
 
+  printf("Search done with linear search:\n");
   nob = search_dictionary(pdict,key,&pos,lin_search);
 
   if(nob >= 0) {
@@ -89,8 +97,34 @@ int main(int argc, char** argv)
     printf("Error when searching the key %d\n",key);
   }
 
+  printf("Search done with auto-linear search:\n");
+  nob = search_dictionary(pdict,key,&pos,lin_auto_search);
+
+  if(nob >= 0) {
+    printf("Key %d found in position %d in %d basic op.\n",key,pos,nob);
+  } else if (nob==NOT_FOUND) {
+    printf("Key %d not found in table\n",key);
+  } else {
+    printf("Error when searching the key %d\n",key);
+  }
+
+  printf("Search done with binary search:\n");
+  nob = search_dictionary(pdict_ordered,key,&pos,bin_search);
+
+  if(nob >= 0) {
+    printf("Key %d found in position %d in %d basic op.\n",key,pos,nob);
+  } else if (nob==NOT_FOUND) {
+    printf("Key %d not found in table\n",key);
+  } else {
+    printf("Error when searching the key %d\n",key);
+  }
+
+  print_dictionary(stdout, pdict_ordered);
+  print_dictionary(stdout, pdict);
+
   free(perm);
   free_dictionary(pdict);
+  free_dictionary(pdict_ordered);
 
   return 0;
 }

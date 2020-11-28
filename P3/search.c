@@ -215,7 +215,7 @@ int search_dictionary(PDICT pdict, int key, int *ppos, pfunc_search method) {
  */
 int bin_search(int *table, int F, int L, int key, int *ppos) {
 
-    int middle = 0, BO = 0;
+    int middle = 0, BO = 0, start = 0, end = 0;
     
     /* Checking arguments */
     if(table == NULL || F < 0 || L < 0 || key <= 0 || ppos == NULL)
@@ -223,19 +223,22 @@ int bin_search(int *table, int F, int L, int key, int *ppos) {
 
     /* En el algoritmo que nos dan dice que hagamos 
         result=table[middle]-key; y comparar si es igual a 0
+        pero esto es lo mismo
     */
-    while(F <= L){
+    start = F;
+    end = L;
+    while(start <= end){
         BO++; /* NO estoy seguro */
 
-        middle = (F + L)/2;
+        middle = (start + end)/2;
 
         if(table[middle] == key){
             *ppos = middle;
             return BO;
         } else if (table[middle] < key){
-            middle = (middle + F)/2;
+            end = middle - 1;
         } else {
-            middle = (middle + L)/2;
+            start = middle + 1;
         }
     }
 
@@ -306,7 +309,7 @@ int lin_auto_search(int *table, int F, int L, int key, int *ppos) {
             *ppos = i;
 
             /* Swapping */
-            if (i > 0) swap(table[i], table[i-1]);
+            if (i > 0) swap(&table[i], &table[i-1]);
             
             *ppos = i;
             return BO;
@@ -316,4 +319,21 @@ int lin_auto_search(int *table, int F, int L, int key, int *ppos) {
     /* If we reach this point it means that we didn't find the key */
     *ppos = NOT_FOUND;
     return BO;
+}
+
+int print_dictionary(FILE *f, PDICT pdict){
+
+    int i = 0;
+
+    if (f == NULL || pdict == NULL)
+        return ERR;
+
+    printf("Size: %d\n", pdict->size);
+    printf("Order: %d\n", pdict->order);
+    printf("N_data: %d\n", pdict->n_data);
+    printf("Data: ");
+    
+    for(i = 0; i < pdict->size; i++) printf("%d ", pdict->table[i]);
+
+    return 0;
 }
