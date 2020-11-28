@@ -123,15 +123,15 @@ int insert_dictionary(PDICT pdict, int key) {
     /* Checking how the table is sorted and if it is full */
     if (pdict->order == NOT_SORTED && pdict->n_data < pdict->size) {
 
-        pdict->table[pdict->n_data] = key;
+        pdict->table[pdict->n_data] = key; /*table[pdict->size - 1]?*/
         pdict->n_data += 1;
 
         /* We didn't do any basic operation */
         return BO;
-    } else if (pdict->order == NOT_SORTED && pdict->n_data < pdict->size) {
+    } else if (pdict->order == SORTED && pdict->n_data < pdict->size) {
 
         pdict->table[pdict->size - 1] = key;
-        j = pdict->size - 1;
+        j = pdict->size - 2;
         
         while (j >= 0) {
             if (pdict->table[j] > key) {

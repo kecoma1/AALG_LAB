@@ -64,6 +64,7 @@ int main(int argc, char** argv)
   if (pdict_ordered == NULL) {
     /* error */
     printf("Error: Ordered Dictionary could not be initialized\n");
+    free_dictionary(pdict);
     exit(-1);
   }
 
@@ -73,6 +74,7 @@ int main(int argc, char** argv)
     /* error */
     printf("Error: No hay memoria\n");
     free_dictionary(pdict);
+    free_dictionary(pdict_ordered);
     exit(-1);
   }
 
@@ -80,9 +82,21 @@ int main(int argc, char** argv)
 
   if (nob == ERR) {
     /* error */
-    printf("Error: Dictionary could not be created\n");
+    printf("Error: Unordered Dictionary could not be created\n");
     free(perm);
     free_dictionary(pdict);
+    free_dictionary(pdict_ordered);
+    exit(-1);
+  }
+
+  nob = massive_insertion_dictionary(pdict_ordered, perm, size);
+
+  if (nob == ERR) {
+    /* error */
+    printf("Error: Ordered Dictionary could not be created\n");
+    free(perm);
+    free_dictionary(pdict);
+    free_dictionary(pdict_ordered);
     exit(-1);
   }
 
