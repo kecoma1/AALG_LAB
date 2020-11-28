@@ -1,6 +1,6 @@
 /***********************************************/
-/* Program: exercise1     Date:             */
-/* Authors:                                    */
+/* Program: exercise1     Date: 28/11/2020     */
+/* Authors: Kevin de la Coba y Marcos Bernuy   */
 /*                                             */
 /* Program that checks the correct behaviour of*/
 /* linear search                               */
@@ -39,8 +39,8 @@ int main(int argc, char** argv)
   }
 
   printf("Pratice number 3, section 1\n");
-  printf("Done by: Your names\n");
-  printf("Group: Your group\n");
+  printf("Done by: Kevin de la Coba and Marcos Bernuy\n");
+  printf("Group: 1292\n");
 
   /* comprueba la linea de comandos */
   for(i = 1; i < argc; i++) {
@@ -54,7 +54,6 @@ int main(int argc, char** argv)
   }
 
   pdict = init_dictionary(size,NOT_SORTED);
-
   if (pdict == NULL) {
     /* error */
     printf("Error: Dictionary could not be initialized\n");

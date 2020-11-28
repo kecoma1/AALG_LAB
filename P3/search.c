@@ -70,7 +70,7 @@ PDICT init_dictionary(int size, char order) {
     PDICT pdict;
     int i = 0;
 
-    if (size <= 0 || (order != SORTED || order != NOT_SORTED))
+    if (size <= 0 || (order != SORTED && order != NOT_SORTED))
         return NULL;
 
     pdict = (PDICT)malloc(sizeof(DICT));
@@ -128,7 +128,7 @@ int insert_dictionary(PDICT pdict, int key) {
 
         /* We didn't do any basic operation */
         return BO;
-    } else if (pdict-/* your code */>order == NOT_SORTED && pdict->n_data < pdict->size) {
+    } else if (pdict->order == NOT_SORTED && pdict->n_data < pdict->size) {
 
         pdict->table[pdict->size - 1] = key;
         j = pdict->size - 1;
@@ -177,7 +177,7 @@ int massive_insertion_dictionary(PDICT pdict, int *keys, int n_keys) {
 }
 
 /**
- * @brief Function to search in the dictionary a key given an function
+ * @brief Function to search in the dictionary a key given a function
  * 
  * @param pdict Dictionary where we are going to search the key
  * @param key Key to search
@@ -187,7 +187,17 @@ int massive_insertion_dictionary(PDICT pdict, int *keys, int n_keys) {
  * @return int Basic operations done
  */
 int search_dictionary(PDICT pdict, int key, int *ppos, pfunc_search method) {
-    /* your code */
+
+    int BO = 0;
+
+    /* Checking arguments */
+    if (pdict == NULL || key <= 0 || ppos == NULL || method == NULL){
+        return ERR;
+    }
+
+    BO = method(pdict->table, 0, pdict->size, key, ppos);
+    
+    return BO;
 }
 
 /* Search functions of the Dictionary ADT */
@@ -204,7 +214,33 @@ int search_dictionary(PDICT pdict, int key, int *ppos, pfunc_search method) {
  * @return int Basic operations done
  */
 int bin_search(int *table, int F, int L, int key, int *ppos) {
-    /* your code */
+
+    int middle = 0, BO = 0;
+    
+    /* Checking arguments */
+    if(table == NULL || F < 0 || L < 0 || key <= 0 || ppos == NULL)
+        return ERR;
+
+    /* En el algoritmo que nos dan dice que hagamos 
+        result=table[middle]-key; y comparar si es igual a 0
+    */
+    while(F <= L){
+        BO++; /* NO estoy seguro */
+
+        middle = (F + L)/2;
+
+        if(table[middle] == key){
+            *ppos = middle;
+            return BO;
+        } else if (table[middle] < key){
+            middle = (middle + F)/2;
+        } else {
+            middle = (middle + L)/2;
+        }
+    }
+
+    *ppos = NOT_FOUND;
+    return BO;
 }
 
 /**
