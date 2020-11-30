@@ -3,7 +3,7 @@
 # It is assumed that the name of the source files is exercise1.c, exercise2.c,...,exercise.h
 #-----------------------
 
-CC = gcc -ansi -pedantic
+CC = gcc -ansi -pedantic -g
 CFLAGS = -Wall
 EXE = exercise1 exercise2
 

@@ -105,6 +105,7 @@ void free_dictionary(PDICT pdict) {
 
     if (pdict->table != NULL) free(pdict->table);
     free(pdict);
+    pdict = NULL;
 }
 
 /**
@@ -130,8 +131,8 @@ int insert_dictionary(PDICT pdict, int key) {
         return BO;
     } else if (pdict->order == SORTED && pdict->n_data < pdict->size) {
 
-        pdict->table[pdict->size - 1] = key;
-        j = pdict->size - 2;
+        pdict->table[pdict->n_data] = key;
+        j = pdict->n_data - 1;
         
         while (j >= 0) {
             if (pdict->table[j] > key) {
@@ -142,6 +143,8 @@ int insert_dictionary(PDICT pdict, int key) {
         }
         pdict->table[j+1] = key;
         pdict->n_data += 1;
+
+        return BO;
     }
 
     return ERR;
@@ -184,7 +187,7 @@ int massive_insertion_dictionary(PDICT pdict, int *keys, int n_keys) {
  * @param ppos Variable passed by reference where we are going 
  *             to store the index of the key
  * @param method Method to use for searching
- * @return int Basic operations done
+ * @return int Basic operations done, ERR in case of error and NOT_FOUND if we don't find the key
  */
 int search_dictionary(PDICT pdict, int key, int *ppos, pfunc_search method) {
 
@@ -195,8 +198,15 @@ int search_dictionary(PDICT pdict, int key, int *ppos, pfunc_search method) {
         return ERR;
     }
 
-    BO = method(pdict->table, 0, pdict->size, key, ppos);
+    BO = method(pdict->table, 0, pdict->n_data-1, key, ppos); /* TODO duda sobre el L */
+    if (BO == ERR) {
+        free_dictionary(pdict);
+        return ERR;
+    }
     
+    /* In case we didn't find the key */
+    if (*ppos == NOT_FOUND) return NOT_FOUND;
+
     return BO;
 }
 
@@ -215,30 +225,34 @@ int search_dictionary(PDICT pdict, int key, int *ppos, pfunc_search method) {
  */
 int bin_search(int *table, int F, int L, int key, int *ppos) {
 
-    int middle = 0, BO = 0, start = 0, end = 0;
+    int middle = 0, BO = 0, start = 0, end = 0, result = 0;
     
     /* Checking arguments */
     if(table == NULL || F < 0 || L < 0 || key <= 0 || ppos == NULL)
         return ERR;
 
     /* En el algoritmo que nos dan dice que hagamos 
-        result=table[middle]-key; y comparar si es igual a 0
+         y comparar si es igual a 0
         pero esto es lo mismo
     */
     start = F;
     end = L;
     while(start <= end){
-        BO++; /* NO estoy seguro */
 
         middle = (start + end)/2;
 
-        if(table[middle] == key){
+        BO++;
+        result = table[middle] - key;
+        result=table[middle]-key;
+        if(result == 0){
             *ppos = middle;
             return BO;
-        } else if (table[middle] < key){
-            end = middle - 1;
-        } else {
+        } 
+        
+        if (result < 0){
             start = middle + 1;
+        } else {
+            end = middle - 1;
         }
     }
 
@@ -321,11 +335,11 @@ int lin_auto_search(int *table, int F, int L, int key, int *ppos) {
     return BO;
 }
 
-int print_dictionary(FILE *f, PDICT pdict){
+int print_dictionary(PDICT pdict){
 
     int i = 0;
 
-    if (f == NULL || pdict == NULL)
+    if (pdict == NULL)
         return ERR;
 
     printf("Size: %d\n", pdict->size);
@@ -334,6 +348,7 @@ int print_dictionary(FILE *f, PDICT pdict){
     printf("Data: ");
     
     for(i = 0; i < pdict->size; i++) printf("%d ", pdict->table[i]);
+    printf("\n");
 
     return 0;
 }

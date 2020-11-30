@@ -140,6 +140,6 @@ void uniform_key_generator(int *keys, int n_keys, int max);
 void potential_key_generator(int *keys, int n_keys, int max);
 
 
-
+int print_dictionary(PDICT pdict);
 #endif
 

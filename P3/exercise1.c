@@ -114,6 +114,7 @@ int main(int argc, char** argv)
   printf("Search done with auto-linear search:\n");
   nob = search_dictionary(pdict,key,&pos,lin_auto_search);
 
+
   if(nob >= 0) {
     printf("Key %d found in position %d in %d basic op.\n",key,pos,nob);
   } else if (nob==NOT_FOUND) {
@@ -133,8 +134,8 @@ int main(int argc, char** argv)
     printf("Error when searching the key %d\n",key);
   }
 
-  print_dictionary(stdout, pdict_ordered);
-  print_dictionary(stdout, pdict);
+ /*print_dictionary(stdout, pdict_ordered);
+  print_dictionary(stdout, pdict);*/
 
   free(perm);
   free_dictionary(pdict);
