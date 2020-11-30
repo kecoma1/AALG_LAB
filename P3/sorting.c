@@ -293,13 +293,11 @@ int split(int *table, int ip, int iu, int *pos) {
 
     ret = median(table, ip, iu, pos);
     if (ret == ERR) return ERR;
-    counter += ret;
 
     k = table[*pos];
 
     if (swap(&table[ip], &table[*pos]) == ERR) return ERR;
 
-    *pos = ip;
     for (i = ip + 1; i <= iu; i++) {
         if (table[i] < k) {
             *pos += 1;
@@ -333,5 +331,5 @@ int median(int *table, int ip, int iu, int *pos) {
 
     *pos = ip;
 
-    return 0;
+    return OK;
 }
