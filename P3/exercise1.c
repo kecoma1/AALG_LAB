@@ -40,7 +40,7 @@ int main(int argc, char** argv)
 
   printf("Pratice number 3, section 1\n");
   printf("Done by: Kevin de la Coba and Marcos Bernuy\n");
-  printf("Group: 1292\n");
+  printf("Group: 1292\n\n");
 
   /* comprueba la linea de comandos */
   for(i = 1; i < argc; i++) {
@@ -104,7 +104,7 @@ int main(int argc, char** argv)
   nob = search_dictionary(pdict,key,&pos,lin_search);
 
   if(nob >= 0) {
-    printf("Key %d found in position %d in %d basic op.\n",key,pos,nob);
+    printf("Key %d found in position %d in %d basic op.\n\n",key,pos,nob);
   } else if (nob==NOT_FOUND) {
     printf("Key %d not found in table\n",key);
   } else {
@@ -116,7 +116,7 @@ int main(int argc, char** argv)
 
 
   if(nob >= 0) {
-    printf("Key %d found in position %d in %d basic op.\n",key,pos,nob);
+    printf("Key %d found in position %d in %d basic op.\n\n",key,pos,nob);
   } else if (nob==NOT_FOUND) {
     printf("Key %d not found in table\n",key);
   } else {
@@ -127,7 +127,7 @@ int main(int argc, char** argv)
   nob = search_dictionary(pdict_ordered,key,&pos,bin_search);
 
   if(nob >= 0) {
-    printf("Key %d found in position %d in %d basic op.\n",key,pos,nob);
+    printf("Key %d found in position %d in %d basic op.\n\n",key,pos,nob);
   } else if (nob==NOT_FOUND) {
     printf("Key %d not found in table\n",key);
   } else {

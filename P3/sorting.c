@@ -296,8 +296,6 @@ int split(int *table, int ip, int iu, int *pos) {
 
     k = table[*pos];
 
-    if (swap(&table[ip], &table[*pos]) == ERR) return ERR;
-
     for (i = ip + 1; i <= iu; i++) {
         if (table[i] < k) {
             *pos += 1;
