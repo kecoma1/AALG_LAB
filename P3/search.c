@@ -235,9 +235,9 @@ int bin_search(int *table, int F, int L, int key, int *ppos) {
             *ppos = middle;
             return BO;
         } else if (key < table[middle]) {
-            start = middle + 1;
-        } else {
             end = middle - 1;
+        } else {
+            start = middle + 1;
         }
     }
     *ppos = NOT_FOUND;
