@@ -50,7 +50,9 @@ times.o : times.c times.h
 
 exercise1_test:
 	@echo Running exercise1
-	@./exercise1 -size 10 -key 5
+	@./exercise1 -size 15 -key 12
+	@echo Running exercise1 with valgrind
+	@valgrind --leak-check=full ./exercise1 -size 15 -key 11
 
 exercise2_test:
 	@echo Running exercise2
