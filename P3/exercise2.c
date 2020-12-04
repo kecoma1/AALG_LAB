@@ -36,7 +36,7 @@ int main(int argc, char** argv)
   if (argc != 11) {
     fprintf(stderr, "Error in the input parameters:\n\n");
     fprintf(stderr, "%s -num_min <int> -num_max <int> -incr <int>\n", argv[0]);
-    fprintf(stderr, "\t\t -n_keys <int> -n_times <int> -outputFile <string> \n");
+    fprintf(stderr, "\t\t -n_times <int> -outputFile <string> \n");
     fprintf(stderr, "Where:\n");
     fprintf(stderr, "-num_min: minimum number of elements of the table\n");
     fprintf(stderr, "-num_max: maximum number of elements of the table\n");
@@ -69,7 +69,7 @@ int main(int argc, char** argv)
   }
 
   /* calculamos los tiempos */
-  ret = generate_search_times(lin_search, uniform_key_generator, NOT_SORTED, 
+  ret = generate_search_times(bin_search, potential_key_generator, SORTED, 
                                 name, num_min, num_max, incr, n_times);
   if (ret == ERR) { 
     printf("Error in function generate_search_times\n");

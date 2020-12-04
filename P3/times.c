@@ -41,6 +41,10 @@ short average_sorting_time(pfunc_sort method,
     if (perms == NULL)
         return ERR;
 
+    /* Initializing ptime values */
+    ptime->min_ob = __INT_MAX__;
+    ptime->max_ob = 0;
+
     start = clock();
     if (start == (clock_t)-1)
     {
@@ -65,10 +69,8 @@ short average_sorting_time(pfunc_sort method,
         }
 
         /* Checking the maximum and minimum values of the structure */
-        if (ptime->min_ob == 0 || ptime->min_ob > BOs)
-            ptime->min_ob = BOs;
-        if (ptime->max_ob == 0 || ptime->max_ob < BOs)
-            ptime->max_ob = BOs;
+        if (ptime->min_ob > BOs) ptime->min_ob = BOs;
+        if (ptime->max_ob < BOs) ptime->max_ob = BOs;
 
         total_BOs += BOs;
     }
@@ -113,7 +115,7 @@ short generate_sorting_times(pfunc_sort method, char *file,
     PTIME_AA ptime = NULL;
 
     /* Checking arguments */
-    if (method == NULL || file == NULL || num_min < 0 || num_max < 0 || incr < 1 || n_perms < 1)
+    if (method == NULL || file == NULL || num_min < 0 || num_max <= 0 || num_min > num_max || incr < 1 || n_perms < 1)
         return ERR;
 
     /* Allocating memory for the array of ptimes */
@@ -123,10 +125,8 @@ short generate_sorting_times(pfunc_sort method, char *file,
         return ERR;
 
     /* Calling the function to get the ptimes */
-    for (i = num_min; i <= num_max; i += incr, n++)
-    {
-        if (average_sorting_time(method, n_perms, i, &ptime[n]) == ERR)
-        {
+    for (i = num_min; i <= num_max; i += incr, n++) {
+        if (average_sorting_time(method, n_perms, i, &ptime[n]) == ERR) {
             free(ptime);
             return ERR;
         }
@@ -153,7 +153,7 @@ short generate_sorting_times(pfunc_sort method, char *file,
  */
 short save_time_table(char *file, PTIME_AA ptime, int n_times) {
 
-    int i = 0;
+    int i = 0, ret = 0;
     FILE *fp = NULL;
 
     /* Checking arguments */
@@ -172,7 +172,8 @@ short save_time_table(char *file, PTIME_AA ptime, int n_times) {
     }
 
     /* Closing the file */
-    fclose(fp);
+    ret = fclose(fp);
+    while (ret != 0) ret = fclose(fp);
 
     return OK;
 }
@@ -195,7 +196,36 @@ short generate_search_times(pfunc_search method, pfunc_key_generator generator,
                                 int order, char* file, 
                                 int num_min, int num_max, 
                                 int incr, int n_times) {
+    int i = 0, size = 0, n = 0;
+    PTIME_AA ptime = NULL;
 
+    if (method == NULL || generator == NULL || (order != NOT_SORTED && order != SORTED) || num_min < 0
+        || num_max <= 0 || num_max < num_min || incr <= 0 || n_times <= 0) return ERR;
+    
+    /* Allocating memory for the array of ptimes */
+    size = ((num_max - num_min) / incr) + 1;
+    ptime = (PTIME_AA)malloc(size * sizeof(TIME_AA));
+    if (ptime == NULL) return ERR;
+
+    /* Getting the average searching time for each size */
+    for (i = num_min; i <= num_max; i += incr, n++) {
+        if (average_search_time(method, generator, order, i, n_times, &ptime[n]) == ERR) {
+            free(ptime);
+            ptime = NULL;
+            return ERR;
+        }
+    }
+
+    /* Saving the times in a file */
+    if (save_time_table(file, ptime, size) == ERR) {
+        free(ptime);
+        ptime = NULL;
+        return ERR;
+    }
+
+    free(ptime);
+    ptime = NULL;
+    return OK;
 }
 
 /**
@@ -215,5 +245,100 @@ short average_search_time(pfunc_search metodo, pfunc_key_generator generator,
                               int N, 
                               int n_times,
                               PTIME_AA ptime) {
+    clock_t start = 0, end = 0;
+    double total = 0;
+    int *perm = NULL, *keys = NULL, i = 0, ppos = 0;
+    long BO = 0, total_BO = 0;
+    PDICT dict = NULL;
 
+    if (metodo == NULL || generator == NULL || (order != NOT_SORTED && order != SORTED)
+        || N < 0 || n_times <= 0 || ptime == NULL) return ERR;
+
+    /* Creating a dictionary */
+    dict = init_dictionary(N, (char)order);
+    if (dict == NULL) return ERR;
+    
+    /* Creating a permutation */
+    perm = generate_perm(N);
+    if (perm == NULL) {
+        free_dictionary(dict);
+        return ERR;
+    }
+
+    /* Inserting the elements of the permutation into the dictionary */
+    total_BO = massive_insertion_dictionary(dict, perm, N);
+    if (total_BO == ERR) {
+        free(perm);
+        perm = NULL;
+        free_dictionary(dict);
+        return ERR;
+    }
+
+    /* Creating an array for the keys */
+    keys = (int*)malloc((n_times*N)*sizeof(int));
+    if (keys == NULL) {
+        free(perm);
+        perm = NULL;
+        free_dictionary(dict);
+        return ERR;
+    }
+
+    /* Generating keys */
+    generator(keys, n_times*N, N);
+
+    /* Initializing ptime values */
+    ptime->min_ob = __INT_MAX__;
+    ptime->max_ob = 0;
+
+    start = clock();
+    if (start == (clock_t) -1) {
+        free(perm);
+        free(keys);
+        keys = NULL;
+        perm = NULL;
+        free_dictionary(dict);
+        return ERR;
+    }
+
+    /* Searching for the keys */
+    for (i = 0; i < n_times*N; i++) {
+        BO = search_dictionary(dict, keys[i], &ppos, metodo);
+        if (BO == ERR || BO == NOT_FOUND) {
+            free(perm);
+            free(keys);
+            keys = NULL;
+            perm = NULL;
+            free_dictionary(dict);
+            return ERR;
+        }
+
+        if (ptime->min_ob > BO) ptime->min_ob = BO;
+        if (ptime->max_ob < BO) ptime->max_ob = BO;
+
+        total_BO += BO;
+    }
+
+    end = clock();
+    if (end == (clock_t)-1) {
+        free(perm);
+        free(keys);
+        keys = NULL;
+        perm = NULL;
+        free_dictionary(dict);
+        return ERR;
+    }
+
+    /* Assingning the values to the structure */
+    total = ((double)(end - start)) / CLOCKS_PER_SEC;
+    ptime->time = total / (double) (n_times*N);
+    ptime->N = N;
+    ptime->average_ob = total_BO/(n_times*N);
+    ptime->n_elems = n_times*N;
+
+    free_dictionary(dict);
+    free(perm);
+    free(keys);
+    keys = NULL;
+    perm = NULL;
+    return OK;
 }
