@@ -67,8 +67,7 @@ void potential_key_generator(int *keys, int n_keys, int max)
  */
 PDICT init_dictionary(int size, char order) {
 
-    PDICT pdict;
-    int i = 0;
+    PDICT pdict = NULL;
 
     if (size <= 0 || (order != SORTED && order != NOT_SORTED))
         return NULL;
@@ -83,14 +82,11 @@ PDICT init_dictionary(int size, char order) {
     pdict->order = order;
 
     /* Reserving memory for the table */
-    pdict->table = (int *)malloc(size * sizeof(pdict->table[0]));
+    pdict->table = (int *)calloc(size, sizeof(pdict->table[0]));
     if (pdict->table == NULL) {
         free(pdict);
         return NULL;
     }
-
-    /* Initializing the table */
-    for (i = 0; i < size; i++) pdict->table[i] = 0;
 
     return pdict;
 }
@@ -124,10 +120,10 @@ int insert_dictionary(PDICT pdict, int key) {
     /* Checking how the table is sorted and if it is full */
     if (pdict->order == NOT_SORTED && pdict->n_data < pdict->size) {
 
-        pdict->table[pdict->n_data] = key; /*table[pdict->size - 1]?*/
+        pdict->table[pdict->n_data] = key;
         pdict->n_data += 1;
 
-        /* We didn't do any basic operation */
+        /* We didn't do any basic operation BO=0 */
         return BO;
     } else if (pdict->order == SORTED && pdict->n_data < pdict->size) {
 
@@ -194,11 +190,10 @@ int search_dictionary(PDICT pdict, int key, int *ppos, pfunc_search method) {
     int BO = 0;
 
     /* Checking arguments */
-    if (pdict == NULL || key <= 0 || ppos == NULL || method == NULL){
+    if (pdict == NULL || key <= 0 || ppos == NULL || method == NULL)
         return ERR;
-    }
 
-    BO = method(pdict->table, 0, pdict->n_data-1, key, ppos); /* TODO duda sobre el L */
+    BO = method(pdict->table, 0, pdict->n_data-1, key, ppos);
     if (BO == ERR) {
         free_dictionary(pdict);
         return ERR;
@@ -225,37 +220,26 @@ int search_dictionary(PDICT pdict, int key, int *ppos, pfunc_search method) {
  */
 int bin_search(int *table, int F, int L, int key, int *ppos) {
 
-    int middle = 0, BO = 0, start = 0, end = 0, result = 0;
+    int middle = 0, BO = 0, start = 0, end = 0;
     
     /* Checking arguments */
-    if(table == NULL || F < 0 || L < 0 || key <= 0 || ppos == NULL)
+    if(table == NULL || F < 0 || L < 0 || F > L || key <= 0 || ppos == NULL)
         return ERR;
 
-    /* En el algoritmo que nos dan dice que hagamos 
-         y comparar si es igual a 0
-        pero esto es lo mismo
-    */
     start = F;
     end = L;
-    while(start <= end){
-
+    while(start <= end) {
         middle = (start + end)/2;
-
         BO++;
-        result = table[middle] - key;
-        result=table[middle]-key;
-        if(result == 0){
+        if(key == table[middle]) {
             *ppos = middle;
             return BO;
-        } 
-        
-        if (result < 0){
+        } else if (key < table[middle]) {
             start = middle + 1;
         } else {
             end = middle - 1;
         }
     }
-
     *ppos = NOT_FOUND;
     return BO;
 }
@@ -282,7 +266,6 @@ int lin_search(int *table, int F, int L, int key, int *ppos) {
     /* Iterating through all the elements of the array */
     for (i = 0; i <= L; i++) {
         BO++;
-
         /* Key found, saving index */
         if (table[i] == key) {
             *ppos = i;
@@ -318,13 +301,12 @@ int lin_auto_search(int *table, int F, int L, int key, int *ppos) {
     for (i = 0; i <= L; i++) {
         BO++;
 
-        /* Key found, saving index */
+        /* Key found, saving index and swapping*/
         if (table[i] == key) {
             *ppos = i;
 
             /* Swapping */
-            if (i > 0) swap(&table[i], &table[i-1]);
-            
+            if (i > F) swap(&table[i], &table[i-1]);
             *ppos = i;
             return BO;
         }
