@@ -22,10 +22,10 @@
 
 int main(int argc, char** argv)
 {
-  int i, nob, pos;
-  unsigned int key, size;
-  PDICT pdict, pdict_ordered;
-  int *perm;
+  int i = 0, nob = 0, pos = 0;
+  unsigned int key = 0, size = 0;
+  PDICT pdict = NULL, pdict_ordered = NULL;
+  int *perm = NULL;
 
   srand(time(NULL));
 

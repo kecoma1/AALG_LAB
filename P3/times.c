@@ -204,7 +204,7 @@ short generate_search_times(pfunc_search method, pfunc_key_generator generator,
     
     /* Allocating memory for the array of ptimes */
     size = ((num_max - num_min) / incr) + 1;
-    ptime = (PTIME_AA)malloc(size * sizeof(TIME_AA));
+    ptime = (PTIME_AA)malloc(size * sizeof(ptime[0]));
     if (ptime == NULL) return ERR;
 
     /* Getting the average searching time for each size */
@@ -214,6 +214,7 @@ short generate_search_times(pfunc_search method, pfunc_key_generator generator,
             ptime = NULL;
             return ERR;
         }
+        if (i%10000 == 0)printf("\t Size: %d\n", i);
     }
 
     /* Saving the times in a file */
@@ -248,11 +249,13 @@ short average_search_time(pfunc_search metodo, pfunc_key_generator generator,
     clock_t start = 0, end = 0;
     double total = 0;
     int *perm = NULL, *keys = NULL, i = 0, ppos = 0;
-    long BO = 0, total_BO = 0;
+    unsigned long BO = 0, total_BO = 0, mul = 0;
     PDICT dict = NULL;
 
     if (metodo == NULL || generator == NULL || (order != NOT_SORTED && order != SORTED)
         || N < 0 || n_times <= 0 || ptime == NULL) return ERR;
+
+    mul = N*n_times;
 
     /* Creating a dictionary */
     dict = init_dictionary(N, (char)order);
@@ -275,7 +278,7 @@ short average_search_time(pfunc_search metodo, pfunc_key_generator generator,
     }
 
     /* Creating an array for the keys */
-    keys = (int*)malloc((n_times*N)*sizeof(int));
+    keys = (int*)malloc(mul*sizeof(int));
     if (keys == NULL) {
         free(perm);
         perm = NULL;
@@ -284,7 +287,7 @@ short average_search_time(pfunc_search metodo, pfunc_key_generator generator,
     }
 
     /* Generating keys */
-    generator(keys, n_times*N, N);
+    generator(keys, mul, N);
 
     /* Initializing ptime values */
     ptime->min_ob = __INT_MAX__;
@@ -301,7 +304,7 @@ short average_search_time(pfunc_search metodo, pfunc_key_generator generator,
     }
 
     /* Searching for the keys */
-    for (i = 0; i < n_times*N; i++) {
+    for (i = 0; i < mul; i++) {
         BO = search_dictionary(dict, keys[i], &ppos, metodo);
         if (BO == ERR || BO == NOT_FOUND) {
             free(perm);
@@ -311,10 +314,8 @@ short average_search_time(pfunc_search metodo, pfunc_key_generator generator,
             free_dictionary(dict);
             return ERR;
         }
-
         if (ptime->min_ob > BO) ptime->min_ob = BO;
         if (ptime->max_ob < BO) ptime->max_ob = BO;
-
         total_BO += BO;
     }
 
@@ -330,10 +331,10 @@ short average_search_time(pfunc_search metodo, pfunc_key_generator generator,
 
     /* Assingning the values to the structure */
     total = ((double)(end - start)) / CLOCKS_PER_SEC;
-    ptime->time = total / (double) (n_times*N);
+    ptime->time = total / (double) (mul);
     ptime->N = N;
-    ptime->average_ob = total_BO/(n_times*N);
-    ptime->n_elems = n_times*N;
+    ptime->average_ob = (double)(total_BO/(double)mul);
+    ptime->n_elems = mul;
 
     free_dictionary(dict);
     free(perm);

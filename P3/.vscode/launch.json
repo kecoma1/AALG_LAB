@@ -9,7 +9,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/exercise2",
-            "args": ["-num_min", "1000", "-num_max", "1590", "-incr", "10", "-n_times", "15", "-outputFile", "test.log"],
+            "args": ["-num_min", "99999", "-num_max", "100000", "-incr", "1", "-n_times", "1", "-outputFile", "test.log"],
             //"args": ["-size", "10","-key", "1"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

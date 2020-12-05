@@ -27,7 +27,7 @@
 
 int main(int argc, char** argv)
 {
-  int i, num_min,num_max,incr,n_times;
+  int i = 0, num_min = 0,num_max = 0,incr = 0,n_times = 0;
   char name[256];
   short ret;
  
