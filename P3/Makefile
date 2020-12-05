@@ -11,7 +11,7 @@ all : $(EXE) main.o main_exe
 
 .PHONY : clean
 clean :
-	rm -f *.o core $(EXE)
+	rm -f *.o core $(EXE) main
 
 $(EXE) : % : %.o sorting.o search.o times.o permutations.o
 	@echo "#---------------------------"

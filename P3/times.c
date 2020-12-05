@@ -12,6 +12,7 @@
 
 #include "times.h"
 #include "sorting.h"
+#include <sys/time.h>
 
 /**
  * @brief Calculates and saves in a TIME_AA the average, 
@@ -28,7 +29,7 @@ short average_sorting_time(pfunc_sort method,
                            int N,
                            PTIME_AA ptime) {
 
-    clock_t start = 0, end = 0;
+    struct timeval  tv1, tv2;
     double total = 0;
     int **perms = NULL, i = 0, n = 0;
     long BOs = 0, total_BOs = 0;
@@ -45,9 +46,7 @@ short average_sorting_time(pfunc_sort method,
     ptime->min_ob = __INT_MAX__;
     ptime->max_ob = 0;
 
-    start = clock();
-    if (start == (clock_t)-1)
-    {
+    if (gettimeofday(&tv1, NULL) != 0) {
         for (i = 0; i < n_perms; n++)
             free(perms[i]);
         free(perms);
@@ -75,9 +74,7 @@ short average_sorting_time(pfunc_sort method,
         total_BOs += BOs;
     }
 
-    end = clock();
-    if (end == (clock_t)-1)
-    {
+    if (gettimeofday(&tv2, NULL) != 0) {
         for (i = 0; i < n_perms; n++)
             free(perms[i]);
         free(perms);
@@ -85,7 +82,7 @@ short average_sorting_time(pfunc_sort method,
     }
 
     /* Assingning the values to the structure */
-    total = ((double)(end - start)) / CLOCKS_PER_SEC;
+    total = (double) (tv2.tv_usec - tv1.tv_usec) / 1000000 + (double) (tv2.tv_sec - tv1.tv_sec);
     ptime->time = total / (double) n_perms;
     ptime->N = N;
     ptime->n_elems = n_perms;
@@ -120,7 +117,7 @@ short generate_sorting_times(pfunc_sort method, char *file,
 
     /* Allocating memory for the array of ptimes */
     counter = ((num_max - num_min) / incr) + 1;
-    ptime = (PTIME_AA)malloc(counter * sizeof(TIME_AA));
+    ptime = (PTIME_AA)malloc(counter * sizeof(ptime[0]));
     if (ptime == NULL)
         return ERR;
 
@@ -214,7 +211,6 @@ short generate_search_times(pfunc_search method, pfunc_key_generator generator,
             ptime = NULL;
             return ERR;
         }
-        if (i%10000 == 0)printf("\t Size: %d\n", i);
     }
 
     /* Saving the times in a file */
@@ -246,16 +242,17 @@ short average_search_time(pfunc_search metodo, pfunc_key_generator generator,
                               int N, 
                               int n_times,
                               PTIME_AA ptime) {
-    clock_t start = 0, end = 0;
+
     double total = 0;
     int *perm = NULL, *keys = NULL, i = 0, ppos = 0;
-    unsigned long BO = 0, total_BO = 0, mul = 0;
+    long BO = 0, total_BO = 0, mul = 0;
     PDICT dict = NULL;
+    struct timeval  tv1, tv2;
 
     if (metodo == NULL || generator == NULL || (order != NOT_SORTED && order != SORTED)
         || N < 0 || n_times <= 0 || ptime == NULL) return ERR;
 
-    mul = N*n_times;
+    mul = (long)(N*n_times);
 
     /* Creating a dictionary */
     dict = init_dictionary(N, (char)order);
@@ -293,8 +290,7 @@ short average_search_time(pfunc_search metodo, pfunc_key_generator generator,
     ptime->min_ob = __INT_MAX__;
     ptime->max_ob = 0;
 
-    start = clock();
-    if (start == (clock_t) -1) {
+    if (gettimeofday(&tv1, NULL) != 0) {
         free(perm);
         free(keys);
         keys = NULL;
@@ -319,8 +315,7 @@ short average_search_time(pfunc_search metodo, pfunc_key_generator generator,
         total_BO += BO;
     }
 
-    end = clock();
-    if (end == (clock_t)-1) {
+    if (gettimeofday(&tv2, NULL) != 0) {
         free(perm);
         free(keys);
         keys = NULL;
@@ -330,7 +325,7 @@ short average_search_time(pfunc_search metodo, pfunc_key_generator generator,
     }
 
     /* Assingning the values to the structure */
-    total = ((double)(end - start)) / CLOCKS_PER_SEC;
+    total = (double) (tv2.tv_usec - tv1.tv_usec) / 1000000 + (double) (tv2.tv_sec - tv1.tv_sec);
     ptime->time = total / (double) (mul);
     ptime->N = N;
     ptime->average_ob = (double)(total_BO/(double)mul);
