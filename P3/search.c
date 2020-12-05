@@ -72,7 +72,7 @@ PDICT init_dictionary(int size, char order) {
     if (size <= 0 || (order != SORTED && order != NOT_SORTED))
         return NULL;
 
-    pdict = (PDICT)malloc(sizeof(DICT));
+    pdict = (PDICT)malloc(sizeof(pdict[0]));
     if (pdict == NULL)
         return NULL;
 
