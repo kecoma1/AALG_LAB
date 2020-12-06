@@ -5,19 +5,23 @@ set title "Binary search VS Linear search - Average basic operations"
 set xlabel "Size of the dictionary"
 set ylabel "Basic operations"
 
+# Leyenda
+set key left top
+set grid
+
 #Range
-#set xrange [1:400]
-#set yrange [0:6000]
+set xrange [1000:50000]
+set yrange [0:30000]
 
 #fit lines
-f(x) = a*log(x)+1
-fit f(x) "Data/UNIFORM_KEY_BINARY_SEARCH.log" using 2:4 via a
+f(x) = a*log(b*x)+x*f
+fit f(x) "Data/Uniform_key_generator/UNIFORM_KEY_BINARY_SEARCH.log" using 2:4 via a, b, f
 
-g(x) = ( (2*x*b)/(c*log(x)) )
-fit g(x) "Data/UNIFORM_KEY_LINEAR_SEARCH.log" using 2:4 via b, c
+g(x) = ( (2*x*c)/(d*log(x*e)) )
+fit g(x) "Data/Uniform_key_generator/UNIFORM_KEY_LINEAR_SEARCH.log" using 2:4 via c, d, e
 
 #Plotting
-plot "Data/UNIFORM_KEY_BINARY_SEARCH.log" using 2:4 title "Average BO BS - log(N)+O(1)",\
-"Data/UNIFORM_KEY_LINEAR_SEARCH.log" using 2:4 title "Average BO LS  (2*N)/log(N)",\
+plot "Data/Uniform_key_generator/UNIFORM_KEY_BINARY_SEARCH.log" using 2:4 title "Average BO BS - log(N)+O(1)",\
+"Data/Uniform_key_generator/UNIFORM_KEY_LINEAR_SEARCH.log" using 2:4 title "Average BO LS  (2*N)/log(N)",\
 f(x) title "fit line BS",\
 g(x) title "fit line LS"
