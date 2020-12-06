@@ -1,16 +1,16 @@
 # Title
-set title "Binary search VS Linear auto search - Average basic operations"
+set title "Binary search VS Linear auto search - Average basic operations - Potential key generator"
 
 #Axis names
 set xlabel "Size of the dictionary"
 set ylabel "Basic operations"
 
 #Range
-#set xrange [1000:50000]
-set yrange [0:100]
+set xrange [1000:50000]
+#set yrange [0:100]
 
 # Leyenda
-set key right top
+set key left top
 set grid
 
 #fit lines
