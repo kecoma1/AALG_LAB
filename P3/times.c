@@ -275,7 +275,7 @@ short average_search_time(pfunc_search metodo, pfunc_key_generator generator,
     }
 
     /* Creating an array for the keys */
-    keys = (int*)malloc(mul*sizeof(int));
+    keys = (int*)malloc(mul*sizeof(keys[0]));
     if (keys == NULL) {
         free(perm);
         perm = NULL;
