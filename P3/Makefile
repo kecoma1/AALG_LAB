@@ -63,6 +63,6 @@ exercise1_test:
 
 exercise2_test:
 	@echo Running exercise2
-	@./exercise2 -num_min 1000 -num_max 50000 -incr 100 -n_times 1 -outputFile exercise5.log
+	@./exercise2 -num_min 1000 -num_max 1500 -incr 100 -n_times 1 -outputFile exercise5.log
 	@echo Running exercise2 with valgrind
-	@valgrind --leak-check=full ./exercise2 -num_min 10 -num_max 1500 -incr 10 -n_times 1 -outputFile v_exercise5.log
+	@valgrind --leak-check=full ./exercise2 -num_min 10 -num_max 1500 -incr 100 -n_times 1 -outputFile v_exercise5.log
