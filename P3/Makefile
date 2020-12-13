@@ -57,12 +57,16 @@ main_exe:
 
 exercise1_test:
 	@echo Running exercise1
-	@./exercise1 -size 15000 -key 12
+	@./exercise1 -size 15000 -key 5679
+	@echo Running exercise1 - NOT FOUND RUN
+	@./exercise1 -size 15000 -key 16000
 	@echo Running exercise1 with valgrind
 	@valgrind --leak-check=full ./exercise1 -size 15000 -key 5679
+	@echo Running exercise1 with valgrind - ERROR RUN
+	@valgrind --leak-check=full ./exercise1 -size 15000 -key 0
 
 exercise2_test:
 	@echo Running exercise2
-	@./exercise2 -num_min 1000 -num_max 1500 -incr 100 -n_times 1 -outputFile exercise5.log
+	@./exercise2 -num_min 10 -num_max 1500 -incr 10 -n_times 100 -outputFile exercise5.log
 	@echo Running exercise2 with valgrind
-	@valgrind --leak-check=full ./exercise2 -num_min 10 -num_max 1500 -incr 100 -n_times 1 -outputFile v_exercise5.log
+	@valgrind --leak-check=full ./exercise2 -num_min 10 -num_max 1500 -incr 10 -n_times 100 -outputFile v_exercise5.log
